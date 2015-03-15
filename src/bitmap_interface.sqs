@@ -1,0 +1,218 @@
+/* ----------
+ * bitmap_interface.sqs (or a file derived from it)
+ *
+ *      Source file from which bitmap--<version>.sql is generated using
+ *	sed. 
+ *
+ *      Copyright (c) 2015 Marc Munro
+ *      Author:  Marc Munro
+ *	License: BSD
+ *
+ * ----------
+ */
+
+
+-- TODO: SQL Comments for these things!
+
+create 
+function bitmap_in(textin cstring) returns bitmap
+     as '@LIBPATH@', 'bitmap_in'
+     language C stable strict;
+
+comment on function bitmap_in(cstring) is
+'Read the serialised string representation of a bitmap, TEXTIN, into a bitmap.';
+
+
+create 
+function bitmap_out(bitmap bitmap) returns cstring
+     as '@LIBPATH@', 'bitmap_out'
+     language C stable strict;
+
+comment on function bitmap_out(bitmap) is
+'create a serialised string representation of BITMAP.';
+
+
+create type bitmap (
+    input = bitmap_in,
+    output = bitmap_out,
+    internallength = variable,
+    alignment = double,
+    storage = main
+);
+
+comment on type bitmap is
+'A set-of-bits type, intended for use in managing sets of privileges for
+security purposes.';
+
+
+create
+function bits(bitmap bitmap) returns setof int4
+     as '@LIBPATH@', 'bitmap_bits'
+     language C stable strict;
+
+comment on function bits(bitmap) is
+'Return a set of integers showing the contents of BITMAP';
+
+
+create
+function bitmap() returns bitmap
+     as '@LIBPATH@', 'bitmap_new_empty'
+     language C stable strict;
+
+comment on function bitmap() is
+'Return an empty bitmap';
+
+create
+function bitmap(bitno int4) returns bitmap
+     as '@LIBPATH@', 'bitmap_new'
+     language C stable strict;
+
+comment on function bitmap(int4) is
+'Return a bitmap containing the single bit provided in BITNO.';
+
+
+create 
+function is_empty(bitmap bitmap) returns boolean
+     as '@LIBPATH@', 'bitmap_is_empty'
+     language C stable strict;
+
+comment on function is_empty(bitmap) is
+'Predicate identifying whether BITMAP is empty';
+
+
+create 
+function bitmin(bitmap bitmap) returns int4
+     as '@LIBPATH@', 'bitmap_bitmin'
+     language C stable strict;
+
+comment on function bitmin(bitmap) is
+'Return the number of the minimum bit stored in BITMAP.  NULL, if no
+bits';
+
+
+create 
+function bitmax(bitmap bitmap) returns int4
+     as '@LIBPATH@', 'bitmap_bitmax'
+     language C stable strict;
+
+comment on function bitmax(bitmap) is
+'Return the number of the maximum bit stored in BITMAP.  NULL, if no
+bits';
+
+
+create 
+function bitmap_setbit(bitmap bitmap, bitno int4) returns bitmap
+     as '@LIBPATH@', 'bitmap_setbit'
+     language C stable strict;
+
+comment on function bitmap_setbit(bitmap, int4) is
+'In BITMAP, set the bit given by BITNO';
+
+create operator + (
+    procedure = bitmap_setbit,
+    leftarg = bitmap,
+    rightarg = int4
+);
+
+
+create 
+function bitmap_testbit(bitmap bitmap, bitno int4) returns bool
+     as '@LIBPATH@', 'bitmap_testbit'
+     language C stable strict;
+
+comment on function bitmap_testbit(bitmap, int4) is
+'In BITMAP, test the bit, BITNO, returning true if set, otherwise false.';
+
+create operator ? (
+    procedure = bitmap_testbit,
+    leftarg = bitmap,
+    rightarg = int4
+);
+
+
+create 
+function bitmap_union(bitmap1 bitmap, bitmap2 bitmap) returns bitmap
+     as '@LIBPATH@', 'bitmap_union'
+     language C stable strict;
+
+comment on function bitmap_union(bitmap, bitmap) is
+'Return the union of BITMAP and BITMAP2';
+
+create operator + (
+    procedure = bitmap_union,
+    leftarg = bitmap,
+    rightarg = bitmap,
+    commutator = +
+);
+
+
+create 
+function bitmap_clearbit(bitmap bitmap, bitno int4) returns bitmap
+     as '@LIBPATH@', 'bitmap_clearbit'
+     language C stable strict;
+
+comment on function bitmap_clearbit(bitmap, int4) is
+'In BITMAP, rest the bit, BITNO, to zero.';
+
+create operator - (
+    procedure = bitmap_clearbit,
+    leftarg = bitmap,
+    rightarg = int4
+);
+
+
+create 
+function bitmap_intersection(bitmap1 bitmap, vitmap2 bitmap) returns bitmap
+     as '@LIBPATH@', 'bitmap_intersection'
+     language C stable strict;
+
+comment on function bitmap_intersection(bitmap, bitmap) is
+'Return the intersection of BITMAP and BITMAP2';
+
+create operator * (
+    procedure = bitmap_intersection,
+    leftarg = bitmap,
+    rightarg = bitmap,
+    commutator = *
+);
+
+
+create function bitmap_int_agg(bitmap bitmap, bitno int4) returns bitmap
+     as '@LIBPATH@', 'bitmap_setbit'
+     language C stable strict;
+
+create aggregate bitmap_of(integer) (
+    sfunc = bitmap_int_agg,
+    stype = bitmap,
+    initcond = '[]');
+
+comment on aggregate bitmap_of(integer) is
+'Aggregate a set of integers into a bitmap';
+
+
+create 
+function to_array(bitmap)
+  returns int[] as
+$$
+select array_agg(bits) from bits($1);
+$$
+language sql;
+
+comment on function to_array(bitmap) is
+'Convert a bitmap into an array - this may be a good way of getting a
+user-readable version of a bitmap.';
+
+
+create 
+function to_bitmap(int[])
+  returns bitmap as
+$$
+select bitmap_of(unnest) from unnest($1)
+$$
+language sql;
+
+comment on function to_bitmap(int[]) is
+'Convert an array of integers into a bitmap.';
+
+
+
