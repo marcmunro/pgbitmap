@@ -2,7 +2,7 @@
  * @file   bitmap.h
  * \code
  *     Author:       Marc Munro
- *     Copyright (c) 2015 Marc Munro
+ *     Copyright (c) 2015, 2018 Marc Munro
  *     License:      BSD
  * 
  * \endcode
@@ -535,7 +535,7 @@ bitmapEmpty(Bitmap *bitmap)
  */
 static Bitmap *
 bitmapUnion(Bitmap *bitmap1,
-			 Bitmap *bitmap2)
+			Bitmap *bitmap2)
 {
 	Bitmap *result = newBitmap(MIN(bitmap1->bitzero, bitmap2->bitzero),
 							   MAX(bitmap1->bitmax, bitmap2->bitmax));
@@ -551,7 +551,7 @@ bitmapUnion(Bitmap *bitmap1,
 	bm_int elem;
 	int32 to;
 	int32 from;
-
+	
 	for (to = 0; to < res_elems; to++) {
 		elem = 0;
 		from = to + elem_offset1;
@@ -564,7 +564,8 @@ bitmapUnion(Bitmap *bitmap1,
 		}
 		result->bitset[to] = elem;
 	}
-	
+
+	reduceBitmap(result);
 	return result;
 }
 

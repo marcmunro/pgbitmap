@@ -4,15 +4,13 @@
  *      Source file from which bitmap--<version>.sql is generated using
  *	sed. 
  *
- *      Copyright (c) 2015 Marc Munro
+ *      Copyright (c) 2015, 2018 Marc Munro
  *      Author:  Marc Munro
  *	License: BSD
  *
  * ----------
  */
 
-
--- TODO: SQL Comments for these things!
 
 create 
 function bitmap_in(textin cstring) returns bitmap
@@ -188,6 +186,19 @@ create aggregate bitmap_of(integer) (
 
 comment on aggregate bitmap_of(integer) is
 'Aggregate a set of integers into a bitmap';
+
+
+create function bitmap_bitmap_agg(bitmap bitmap, bitmap) returns bitmap
+     as '@LIBPATH@', 'bitmap_union'
+     language C stable strict;
+
+create aggregate union_of(bitmap) (
+    sfunc = bitmap_bitmap_agg,
+    stype = bitmap,
+    initcond = '[]');
+
+comment on aggregate union_of(bitmap) is
+'Union an aggregate of bitmaps into a single bitmap';
 
 
 create 

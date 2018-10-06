@@ -2,7 +2,7 @@
  * @file   bitmap.h
  * \code
  *     Author:       Marc Munro
- *     Copyright (c) 2015 Marc Munro
+ *     Copyright (c) 2015i, 2018 Marc Munro
  *     License:      BSD
  * 
  * \endcode
@@ -44,9 +44,7 @@
  * Gives the bitmask index for the bitzero value of a Bitmap.  This is
  * part of the "normalisation" process for bitmap ranges.  This process
  * allows unlike bitmaps to be more easily compared by forcing bitmap
- * indexes to be normalised around 32 or 64 bit word boundaries.  Eg, 2
- * bitmaps with domains 1 to 50 and 3 to 55, will have identical bit
- * patterns for bits 3 to 50.
+ * indexes to be normalised around 32 or 64 bit word boundaries.
  * 
  * @param x The bitzero value of a bitmap
  * 
