@@ -17,9 +17,8 @@
 # possibly misguided, attempt to avoid recursive make (see the article
 # "Recursive make considered harmful" for a rationale).
 
-.PHONY: installcheck
+.PHONY: unit check test
 
-installcheck:
-
-unit:
-	@echo DEFINE UNIT TESTS
+# You can run this using several target names.
+unit check test:
+	psql -f test/test_bitmap.sql

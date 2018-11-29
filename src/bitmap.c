@@ -1,5 +1,5 @@
 /**
- * @file   bitmap.h
+ * @file   bitmap.c
  * \code
  *     Author:       Marc Munro
  *     Copyright (c) 2015, 2018 Marc Munro
@@ -7,9 +7,7 @@
  * 
  * \endcode
  * @brief  
- * Define a bitmap type for postgres.  Note that this is derived from
- * veil in an attempt to deprecate veil now that PostgreSQL has built-in
- * features that render much of it redundant.
+ * Define a bitmap type for postgres.
  * 
  */
 
@@ -18,8 +16,16 @@
 PG_MODULE_MAGIC;
 
 
-#define INT32SIZE_B64          7   /* Actually 8 but the last char is
-									* always '=' so we forget it. */
+/**
+ * The length of a 64-bit integer as a base64 string.
+ * This should really be 8 but the last char is always '=' so we can
+ * optimise it away.
+ */
+#define INT32SIZE_B64          7 
+
+/**
+ * The length of a 32-bit integer as a base64 string.
+ */
 #define INT64SIZE_B64          12
 
 
@@ -213,6 +219,20 @@ b64_decode(const char *src, unsigned len, char *dst)
 
 
 /** 
+ * Predicate identifying whether the bitmap is empty.
+ * 
+ * @param bitmap The ::Bitmap being scanned.
+ * 
+ * @return True if the bit at bitmin is zero.
+ */
+
+static boolean
+bitmapEmpty(Bitmap *bitmap)
+{
+	return ((bitmap->bitset[0]) == 0);
+}
+
+/** 
  * Clear all bits in a ::Bitmap.
  * 
  * @param bitmap The ::Bitmap in which all bits are to be cleared
@@ -220,7 +240,7 @@ b64_decode(const char *src, unsigned len, char *dst)
 static void
 clearBitmap(Bitmap *bitmap)
 {
-	int32 elems = ARRAYELEMS(bitmap->bitzero, bitmap->bitmax);
+	int32 elems = ARRAYELEMS(bitmap->bitmin, bitmap->bitmax);
 	int32 i;
 	
 	for (i = 0; i < elems; i++) {
@@ -230,7 +250,7 @@ clearBitmap(Bitmap *bitmap)
 
 
 /** 
- * Return a newly initialised (empty) ::Bitmap.
+ * Return a new, possibly uninitialised, ::Bitmap.
  * 
  * @param min  The lowest value bit to be stored in the bitmap
  * @param max  The highest value bit to be stored in the bitmap
@@ -246,9 +266,8 @@ newBitmap(int32 min, int32 max)
 
 	SET_VARSIZE(bitmap, size);
 	
-	bitmap->bitzero = min;
+	bitmap->bitmin = min;
 	bitmap->bitmax = max;
-	clearBitmap(bitmap);
 
 	return bitmap;
 }
@@ -267,16 +286,39 @@ static bool
 bitmapTestbit(Bitmap *bitmap,
 			   int32 bit)
 {
-    int32 relative_bit = bit - BITZERO(bitmap->bitzero);
-    int32 element = BITSET_ELEM(relative_bit);
-
 	if ((bit > bitmap->bitmax) ||
-		(bit < bitmap->bitzero)) 
+		(bit < bitmap->bitmin)) 
 	{
 		return false;
 	}
+	else {
+		int32 relative_bit = bit - BITZERO(bitmap->bitmin);
+		int32 element = BITSET_ELEM(relative_bit);
+		
+		return (bitmap->bitset[element] &
+				bitmasks[BITSET_BIT(relative_bit)]) != 0;
+	}
+}
 
-    return (bitmap->bitset[element] & bitmasks[BITSET_BIT(relative_bit)]) != 0;
+/** 
+ * Create a copy of a bitmap.
+ * 
+ * @param bitmap  The original bitmap
+ *
+ * @return Copy of bitmap.
+ */
+static Bitmap *
+copyBitmap(Bitmap *bitmap)
+{
+	Bitmap *result;
+	int32 i;
+
+	result = newBitmap(bitmap->bitmin, bitmap->bitmax);
+	
+	for (i = ARRAYELEMS(bitmap->bitmin, bitmap->bitmax); i >= 0; i--) {
+		result->bitset[i] = bitmap->bitset[i];
+	}
+	return result;
 }
 
 
@@ -288,160 +330,197 @@ bitmapTestbit(Bitmap *bitmap,
  * @param bit     A new bit that the returned bitmap must be capable of
  *                storing. 
  *
- * @return New bitmap with appropriate bitzero and bitmax values.
+ * @return New bitmap with appropriate bitmin and bitmax values.
  */
 static Bitmap *
 extendBitmap(Bitmap *bitmap,
-			 int32 bit)
+			  int32 bit)
 {
-	Bitmap *result = bitmap;
-	int32 from;
-	int32 to;
-    int32 relative_frombit;
+	Bitmap *result;
+	int32 orig_elems = ARRAYELEMS(bitmap->bitmin, bitmap->bitmax);
+	int32 new_elems;
+	int32 elems_offset;
+	int32 extra_elems;
+	int32 to_clear;
+	int32 i;
+	//elog(NOTICE, "Adding %d to %d->%d", bit, bitmap->bitmin, bitmap->bitmax);
 
-	if (BITZERO(bit) < BITZERO(bitmap->bitzero)) {
-		result = newBitmap(bit, bitmap->bitmax);
-		relative_frombit = bitmap->bitzero - BITZERO(result->bitzero);
+	// Allocate new bitmap (no need to clear it)
+	result = newBitmap(MIN(bit, bitmap->bitmin),
+					   MAX(bit, bitmap->bitmax));
+	//elog(NOTICE, "New: %d->%d", result->bitmin, result->bitmax);
 
-		for (from = 0, to = BITSET_ELEM(relative_frombit);
-			 to <= BITSET_ELEM(result->bitmax);
-			 from++, to++) 
-		{
-			result->bitset[to] = bitmap->bitset[from];
-		}
+	// Copy existing bitset into our new bitset.
+	elems_offset = BITSET_ELEM(bitmap->bitmin) - BITSET_ELEM(result->bitmin);
+	//elog(NOTICE, "orig_elems %d, offset %d", orig_elems, elems_offset);
+	for (i = 0; i < orig_elems; i++) {
+		//elog(NOTICE, "Copying %d into %d", i, i + elems_offset);
+		result->bitset[i + elems_offset] = bitmap->bitset[i];
 	}
-	if (BITZERO(bit) > BITZERO(bitmap->bitmax)) {
-		result = newBitmap(bitmap->bitzero, bit);
-		for (to = 0; to < ARRAYELEMS(bitmap->bitzero, bitmap->bitmax); to++) {
-			result->bitset[to] = bitmap->bitset[to];
-		}
+
+	// Clear any preceding elements
+	for (i = 0; i < elems_offset; i++) {
+		//elog(NOTICE, "Clearing %d", i);
+		result->bitset[i] = 0;
+	}
+	
+	// Clear any following elements
+	new_elems = ARRAYELEMS(result->bitmin, result->bitmax);
+	extra_elems = new_elems - orig_elems;
+	to_clear = extra_elems - elems_offset;
+	//elog(NOTICE, "new_elems %d, extra_elems %d, to_clear %d",
+	//	 new_elems, extra_elems, to_clear);
+	for (i = new_elems - to_clear; i < new_elems; i++) {
+		//elog(NOTICE, "Clearing %d", i);
+		result->bitset[i] = 0;
 	}
 	return result;
 }
 
 
 /** 
- * Set a bit within a ::Bitmap.  
+ * Set a bit within a ::Bitmap.
  * 
  * @param bitmap The ::Bitmap within which the bit is to be set. 
  * @param bit The bit to be set.
  *
  * @return Possibly new bitmap with the specified bit set.
  */
+static void
+doSetBit(Bitmap *bitmap,
+		 int32 bit)
+{
+    int32 relative_bit;
+    int32 element;
+	
+    relative_bit = bit - BITZERO(bitmap->bitmin);
+    element = BITSET_ELEM(relative_bit);
+    bitmap->bitset[element] |= bitmasks[BITSET_BIT(relative_bit)];
+
+	if (bit < bitmap->bitmin) {
+		bitmap->bitmin = bit;
+	}
+	else if (bit > bitmap->bitmax) {
+		bitmap->bitmax = bit;
+	}
+}
+
+/** 
+ * Return a new ::Bitmap with bit set.  
+ * 
+ * @param bitmap The ::Bitmap within which the bit is to be set. 
+ * @param bit The bit to be set.
+ *
+ * @return New bitmap with the specified bit set.
+ */
 static Bitmap *
 bitmapSetbit(Bitmap *bitmap,
 			 int32 bit)
 {
-    int32 relative_bit;
-    int32 element;
-	Bitmap *result = bitmap;
+	Bitmap *result;
 
-	if ((result->bitzero == result->bitmax) &&
-		!bitmapTestbit(result, result->bitzero))
-	{
-		result->bitzero = result->bitmax = bit;
-	}
-
-	if ((bit > bitmap->bitmax) ||
-		(bit < bitmap->bitzero)) 
-	{
+	if ((bit > bitmap->bitmax) || (bit < bitmap->bitmin)) {
 		result = extendBitmap(bitmap, bit);
 	}
-
-    relative_bit = bit - BITZERO(result->bitzero);
-    element = BITSET_ELEM(relative_bit);
-    result->bitset[element] |= bitmasks[BITSET_BIT(relative_bit)];
-
-	if (bit < result->bitzero) {
-		result->bitzero = bit;
+	else {
+		result = copyBitmap(bitmap);
 	}
-	else if (bit > result->bitmax) {
-		result->bitmax = bit;
-	}
+	doSetBit(result, bit);
 	return result;
 }
 
 
 /** 
- * Return the bit number of the lowest bit set in elem.
+ * Return the next set bit in the ::Bitmap.
  * 
- * @param elem  A bitset element
- *
- * @return The bit number of the lowest bit, or -1 if no bits were set.
+ * @param bitmap The ::Bitmap being scanned.
+ * @param inbit The starting bit from which to scan the bitmap
+ * @param found Boolean that will be set to true when a set bit has been
+ * found.
+ * 
+ * @return The bit id of the found bit, or the inbit parameter if no set
+ *         bits were found.  
  */
 static int32
-lowBitno(bm_int elem)
+bitmapNextBit(Bitmap *bitmap,
+			  int32 inbit,
+			  bool *found)
 {
-	int32 i;
-	for (i = 0; i < ELEMBITS; i++) {
-		if (elem & bitmasks[i]) {
-			return i;
+	int32 bit = inbit;
+	while (bit <= bitmap->bitmax) {
+		if (bitmapTestbit(bitmap, bit)) {
+			*found = true;
+			return bit;
 		}
+		bit++;
 	}
-	return -1;
+	*found = false;
+	return inbit;
 }
 
+static char *
+serialise_bitmap(Bitmap *bitmap);
 
 /** 
- * Return the bit number of the highest bit set in elem.
- * 
- * @param elem  A bitset element
- *
- * @return The bit number of the highest bit, or -1 if no bits were set.
- */
-static int32
-highBitno(bm_int elem)
-{
-	int32 i;
-	for (i = ELEMBITS - 1; i >= 0; i--) {
-		if (elem & bitmasks[i]) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-/** 
- * Take an existing bitmap, and shrink it to be bounded by the elements
+ * Take an existing ::Bitmap, and shrink it to be bounded by the elements
  * containing the highest and lowest bits.
  * 
- * @param bitmap  The original bitmap
+ * @param bitmap  The original ::Bitmap
  *
- * @return Bitmap with updated bitzero and bitmax values.
+ * @return Bitmap with updated bitmin and bitmax values.
  */
 static void
 reduceBitmap(Bitmap *bitmap)
 {
-	int32 elems = ARRAYELEMS(bitmap->bitzero, bitmap->bitmax);
-	int32 first_elem = 0;
-	int32 last_elem = elems - 1;
-	int32 to;
+	int32 bit = bitmap->bitmin;
+	bool found;
+	int32 first_elem;
+	int32 last_elem = BITSET_ELEM(bitmap->bitmax) - BITSET_ELEM(bitmap->bitmin);
 	int32 i;
 
-	for (i = 0; i < elems; i++) {
-		if (bitmap->bitset[i]) {
-			first_elem = i;
-			break;
-		}
+	bit = bitmapNextBit(bitmap, bit, &found);
+	if (!found) {
+		/* Bitmap is empty: do a quick exit. */
+		bitmap->bitmax = bitmap->bitmin;
+		return;
 	}
-	for (i = last_elem; i >= first_elem; i--) {
-		if (bitmap->bitset[i]) {
-			last_elem = i;
-			break;
+	first_elem = BITSET_ELEM(bit) - BITSET_ELEM(bitmap->bitmin);
+	if (first_elem) {
+		/* The first elements have no bits, so we need to re-base
+	     * the bitset array. */
+		for (i = first_elem; i <= last_elem; i++) {
+			bitmap->bitset[i - first_elem] = bitmap->bitset[i];
 		}
+		last_elem -= first_elem;
 	}
-	if (first_elem > 0) {
-		to = 0;
-		for (i = first_elem; i <= last_elem; i++, to++) {
-			bitmap->bitset[to] = bitmap->bitset[i];
-		}
+	bitmap->bitmin = bit;
+
+	/* Now find last bit (we know that found is true at this point). */
+	while (found) {
+		bit += 1;
+		bit = bitmapNextBit(bitmap, bit, &found);
 	}
-	bitmap->bitzero = BITZERO(bitmap->bitzero) + 
-		lowBitno(bitmap->bitset[0]) +
-		(ELEMBITS * first_elem);
-	bitmap->bitmax =  BITZERO(bitmap->bitzero) + 
-		highBitno(bitmap->bitset[last_elem]) +
-		(ELEMBITS * last_elem);
+	bitmap->bitmax = bit - 1; /* -1 undoes the last increment in above loop. */
+}
+
+/** 
+ * Clear a bit within a ::Bitmap.
+ * 
+ * @param bitmap The ::Bitmap within which the bit is to be cleared. 
+ * @param bit The bit to be set.
+ *
+ * @return Possibly new bitmap with the specified bit set.
+ */
+static void
+doClearBit(Bitmap *bitmap,
+		   int32 bit)
+{
+    int32 relative_bit = bit - BITZERO(bitmap->bitmin);
+    int32 element = BITSET_ELEM(relative_bit);
+	if ((bit <= bitmap->bitmax) && (bit >= bitmap->bitmin)) 
+	{
+		bitmap->bitset[element] &= ~(bitmasks[BITSET_BIT(relative_bit)]);
+	}
 }
 
 /** 
@@ -457,15 +536,9 @@ static Bitmap *
 bitmapClearbit(Bitmap *bitmap,
 			   int32 bit)
 {
-    int32 relative_bit = bit - BITZERO(bitmap->bitzero);
-    int32 element = BITSET_ELEM(relative_bit);
-
-	if ((bit <= bitmap->bitmax) && (bit >= bitmap->bitzero)) 
-	{
-		bitmap->bitset[element] &= ~(bitmasks[BITSET_BIT(relative_bit)]);
-		if ((bit == bitmap->bitzero) || (bit == bitmap->bitmax)) {
-			reduceBitmap(bitmap);
-		}
+	doClearBit(bitmap, bit);
+	if ((bit == bitmap->bitmin) || (bit == bitmap->bitmax)) {
+		reduceBitmap(bitmap);
 	}
 
 	return bitmap;
@@ -473,63 +546,163 @@ bitmapClearbit(Bitmap *bitmap,
 
 
 /** 
- * Return the next set bit in the ::Bitmap.
+ * Ensure bitmin of bitmap is no less than parameter.  This provides the
+ * means to quickly truncate a bitmap.
  * 
- * @param bitmap The ::Bitmap being scanned.
- * @param bit The starting bit from which to scan the bitmap
- * @param found Boolean that will be set to true when a set bit has been
- * found.
+ * @param bitmap The ::Bitmap to be modified
+ * @param bitmin The new minimum value
  * 
- * @return The bit id of the found bit, or zero if no set bits were found. 
+ * @return A newly allocated bitmap which has no lower bits than bitmin
  */
-static int32
-bitmapNextBit(Bitmap *bitmap,
-			  int32 bit,
-			  bool *found)
+static Bitmap *
+bitmapSetMin(Bitmap *bitmap, int bitmin)
 {
-	while (bit <= bitmap->bitmax) {
-		if (bitmapTestbit(bitmap, bit)) {
-			*found = true;
-			return bit;
-		}
-		bit++;
+	Bitmap *result = newBitmap(MAX(bitmap->bitmin, bitmin),
+							   bitmap->bitmax);
+	int32 bitmap_elems = ARRAYELEMS(bitmap->bitmin, bitmap->bitmax);
+	int32 res_elems = ARRAYELEMS(result->bitmin, result->bitmax);
+	int32 lost_elems = bitmap_elems - res_elems;
+	int32 i;
+	
+	/* Copy the bitset elements that we need. */
+	for (i = 0; i < res_elems; i++) {
+		result->bitset[i] = bitmap->bitset[i + lost_elems];
 	}
-	*found = false;
-	return 0;
+
+	if (result->bitmin != bitmap->bitmin) {
+		/* Clear any bits below bitmin */
+		if (result->bitmin > BITZERO(result->bitmin)) {
+			for (i = BITSET_ELEM(result->bitmin - 1); i >= 0; i--) {
+				result->bitset[0] &= ~(bitmasks[BITSET_BIT(i)]);
+			}
+		}
+		/* Update bitmin to match the lowest bit that is actually set. */
+		/* If the bitmap is sparse, there may be entire words that are
+		 * empty of bits.  Let's deal with that situation first. */
+		lost_elems = 0;
+		for (i = 0; i < res_elems; i++) {
+			if (result->bitset[i] == 0) {
+				lost_elems++;
+			}
+			else {
+				break;
+			}
+		}
+		if (lost_elems) {
+			for (i = 0; i < (res_elems - lost_elems); i++) {
+				result->bitset[i] = result->bitset[i + lost_elems];
+			}
+			result->bitmin = BITZERO(result->bitmin + (lost_elems * ELEMBITS));
+		}
+		
+		for (i = BITSET_ELEM(result->bitmin); i < ELEMBITS; i++) {
+			if (result->bitset[0] & bitmasks[BITSET_BIT(i)]) {
+				result->bitmin = BITZERO(result->bitmin) + i;
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+
+/** 
+ * Ensure bitmax of bitmap is no more than parameter
+ * 
+ * @param bitmap The ::Bitmap to be modified
+ * @param bitmax The new minimum value
+ * 
+ * @return A newly allocated bitmap which has no higher bits than bitmax
+ */
+static Bitmap *
+bitmapSetMax(Bitmap *bitmap, int bitmax)
+{
+	Bitmap *result = newBitmap(bitmap->bitmin,
+							   MIN(bitmap->bitmax, bitmax));
+	int32 res_elems = ARRAYELEMS(result->bitmin, result->bitmax);
+	int32 last_elem;
+	int32 lost_elems;
+	int32 i;
+
+	/* Copy the bitset elements that we need. */
+	for (i = 0; i < res_elems; i++) {
+		result->bitset[i] = bitmap->bitset[i];
+	}
+
+	if (result->bitmax != bitmap->bitmax) {
+		last_elem = res_elems - 1;
+		/* Clear any bits above bitmax */
+		for (i = BITSET_BIT(result->bitmax) + 1; i < ELEMBITS; i++) {
+			result->bitset[last_elem] &= ~(bitmasks[BITSET_BIT(i)]);
+		}
+		
+		/* Update bitmax to match the highest bit that is actually set. */
+		lost_elems = 0;
+		for (i = last_elem; i > 0; i--) {
+			if (result->bitset[i] == 0) {
+				// We found an empty word
+				lost_elems++;
+			}
+			else {
+				break;
+			}
+		}
+		if (lost_elems) {
+			result->bitmax = BITZERO(result->bitmax) -
+				(lost_elems * ELEMBITS) + ELEMBITS - 1;
+		}
+		last_elem -= lost_elems;
+
+		for (i = ELEMBITS - 1; i > 0; i--) {
+			if (result->bitset[last_elem] & bitmasks[BITSET_BIT(i)]) {
+				result->bitmax = BITZERO(result->bitmax) + i;
+				break;
+			}
+		}
+	}
+
+	return result;
 }
 
 
 /** 
- * Predicate identifying whether the bitmap is empty.
+ * Test for equality of 2 bitmaps
  * 
- * @param bitmap The ::Bitmap being scanned.
- * 
- * @return True if there are no bits in the bitmap.
+ * @param bitmap1 The first ::Bitmap to be compared
+ * @param bitmap2 The second ::Bitmap to be compared
+ *
+ * @return True if the bitmaps are the same.
  */
-
-static boolean
-bitmapEmpty(Bitmap *bitmap)
+static bool
+bitmapEqual(Bitmap *bitmap1,
+			Bitmap *bitmap2)
 {
-	int32 elems = ARRAYELEMS(bitmap->bitzero, bitmap->bitmax);
+	int32 elems;
 	int32 i;
-	for (i = 0; i < elems; i++) {
-		if (bitmap->bitset[i] != 0) {
-			/* Normally bitzero will be set, so this should return on
-			 * the first iteration unless the bitmap is empty, in which
-			 * case there *should* only be one iteration of the loop.
-			 */
-			return FALSE;
+	if ((bitmap1->bitmin == bitmap2->bitmin) &&
+		(bitmap1->bitmax == bitmap2->bitmax)) {
+		elems = ARRAYELEMS(bitmap1->bitmin, bitmap1->bitmax);
+		for (i = 0; i < elems; i++) {
+			if (bitmap1->bitset[i] != bitmap2->bitset[i]) {
+				return false;
+			}
 		}
+		return true;
 	}
-	return TRUE;
+	else {
+		/* bitmin and bitmax do not agree but they could both be empty
+	     * bitmaps, so check for that.
+		 */
+		return bitmapEmpty(bitmap1) && bitmapEmpty(bitmap2);
+	}
 }
 
 
 /** 
  * Create the union of two bitmaps.
  * 
- * @param target The ::Bitmap into which the result will be placed.
- * @param source The ::Bitmap to be unioned into target.
+ * @param bitmap1 The first ::Bitmap to be unioned.
+ * @param bitmap2 The second ::Bitmap, to be unioned with bitmap1.
  *
  * @return A newly allocated bitmap which is the union
  */
@@ -537,17 +710,17 @@ static Bitmap *
 bitmapUnion(Bitmap *bitmap1,
 			Bitmap *bitmap2)
 {
-	Bitmap *result = newBitmap(MIN(bitmap1->bitzero, bitmap2->bitzero),
+	Bitmap *result = newBitmap(MIN(bitmap1->bitmin, bitmap2->bitmin),
 							   MAX(bitmap1->bitmax, bitmap2->bitmax));
-	int32 res_elems = ARRAYELEMS(result->bitzero, result->bitmax);
-	int32 bit_offset1 = BITZERO(result->bitzero) - BITZERO(bitmap1->bitzero);
-	int32 bit_offset2 = BITZERO(result->bitzero) - BITZERO(bitmap2->bitzero);
+	int32 res_elems = ARRAYELEMS(result->bitmin, result->bitmax);
+	int32 bit_offset1 = BITZERO(result->bitmin) - BITZERO(bitmap1->bitmin);
+	int32 bit_offset2 = BITZERO(result->bitmin) - BITZERO(bitmap2->bitmin);
 	int32 elem_offset1 = BITSET_ELEM(bit_offset1);
 	int32 elem_offset2 = BITSET_ELEM(bit_offset2);
 	int32 elem_max1 = BITSET_ELEM((bitmap1->bitmax - 
-								   BITZERO(bitmap1->bitzero)));
+								   BITZERO(bitmap1->bitmin)));
 	int32 elem_max2 = BITSET_ELEM((bitmap2->bitmax - 
-								   BITZERO(bitmap2->bitzero)));
+								   BITZERO(bitmap2->bitmin)));
 	bm_int elem;
 	int32 to;
 	int32 from;
@@ -565,7 +738,6 @@ bitmapUnion(Bitmap *bitmap1,
 		result->bitset[to] = elem;
 	}
 
-	reduceBitmap(result);
 	return result;
 }
 
@@ -573,26 +745,26 @@ bitmapUnion(Bitmap *bitmap1,
 /** 
  * Create the intersection of two bitmaps.
  * 
- * @param target The ::Bitmap into which the result will be placed.
- * @param source The ::Bitmap to be unioned into target.
+ * @param bitmap1 The first ::Bitmap to be intersected.
+ * @param bitmap2 The second ::Bitmap, to be intersected with bitmap1.
  *
- * @return A newly allocated bitmap which is the union
+ * @return A newly allocated bitmap which is the intersection
  */
 static Bitmap *
 bitmapIntersect(Bitmap *bitmap1,
 				Bitmap *bitmap2)
 {
-	Bitmap *result = newBitmap(MAX(bitmap1->bitzero, bitmap2->bitzero),
+	Bitmap *result = newBitmap(MAX(bitmap1->bitmin, bitmap2->bitmin),
 							   MIN(bitmap1->bitmax, bitmap2->bitmax));
-	int32 res_elems = ARRAYELEMS(result->bitzero, result->bitmax);
-	int32 bit_offset1 = BITZERO(result->bitzero) - BITZERO(bitmap1->bitzero);
-	int32 bit_offset2 = BITZERO(result->bitzero) - BITZERO(bitmap2->bitzero);
+	int32 res_elems = ARRAYELEMS(result->bitmin, result->bitmax);
+	int32 bit_offset1 = BITZERO(result->bitmin) - BITZERO(bitmap1->bitmin);
+	int32 bit_offset2 = BITZERO(result->bitmin) - BITZERO(bitmap2->bitmin);
 	int32 elem_offset1 = BITSET_ELEM(bit_offset1);
 	int32 elem_offset2 = BITSET_ELEM(bit_offset2);
 	int32 elem_max1 = BITSET_ELEM((bitmap1->bitmax - 
-								   BITZERO(bitmap1->bitzero)));
+								   BITZERO(bitmap1->bitmin)));
 	int32 elem_max2 = BITSET_ELEM((bitmap2->bitmax - 
-								   BITZERO(bitmap2->bitzero)));
+								   BITZERO(bitmap2->bitmin)));
 	bm_int elem;
 	int32 to;
 	int32 from;
@@ -612,6 +784,33 @@ bitmapIntersect(Bitmap *bitmap1,
 			}
 		}
 		result->bitset[to] = elem;
+	}
+	reduceBitmap(result);
+	return result;
+}
+
+
+/** 
+ * Create the subtraction of two bitmaps.
+ * 
+ * @param bitmap1 The ::Bitmap from which bitmap2 will be subtracted
+ * @param bitmap2 The ::Bitmap to be subtracted from from bitmap1.
+ *
+ * @return A newly allocated bitmap which is the subtraction
+ */
+static Bitmap *
+bitmapMinus(Bitmap *bitmap1,
+			Bitmap *bitmap2)
+{
+	Bitmap *result = copyBitmap(bitmap1);
+	bool found = !bitmapEmpty(bitmap2);
+	int32 bit = MAX(bitmap1->bitmin, bitmap2->bitmin);
+	
+	/* Now clear any bits that match from bitmap2 */
+	while (found && (bit <= bitmap1->bitmax)) {
+		doClearBit(result, bit);
+		bit++;
+		bit = bitmapNextBit(bitmap2, bit, &found);
 	}
 	reduceBitmap(result);
 	return result;
@@ -673,6 +872,7 @@ deserialise_int32(char **p_stream)
  * pointer is updated to point to the next free slot in the stream after
  * writing the contents of instream and is null terminated at that
  * position.
+ *
  * @param bytes The number of bytes to be written.
  * @param instream The binary stream to be written.
  */
@@ -727,27 +927,27 @@ deserialise_stream(char **p_stream, int32 bytes, char *outstream)
 static char *
 serialise_bitmap(Bitmap *bitmap)
 {
-    int32 elems = ARRAYELEMS(bitmap->bitzero, bitmap->bitmax);
+    int32 elems = ARRAYELEMS(bitmap->bitmin, bitmap->bitmax);
     int32 stream_len = (INT32SIZE_B64 * 2) + 
 		streamlen(sizeof(bm_int) * elems) + 1;
 	char *stream = palloc(stream_len * sizeof(char));
 	char *streamstart = stream;
 
-	serialise_int32(&stream, bitmap->bitzero);
+	serialise_int32(&stream, bitmap->bitmin);
 	serialise_int32(&stream, bitmap->bitmax);
 	serialise_stream(&stream, elems * sizeof(bm_int), 
 					 (char *) &(bitmap->bitset));
 	*stream = '\0';
 
 	/* Ensure bitmap is valid. */
-	if (bitmap->bitzero != bitmap->bitmax) {
-		if (! (bitmapTestbit(bitmap, bitmap->bitzero) &&
+	if (bitmap->bitmin != bitmap->bitmax) {
+		if (! (bitmapTestbit(bitmap, bitmap->bitmin) &&
 			   bitmapTestbit(bitmap, bitmap->bitmax)))
 		{
 			ereport(ERROR,
 					(errcode(ERRCODE_INTERNAL_ERROR),
 					 errmsg("Corrupted bitmap"),
-					 errdetail("one of bitzero or bitmax is not set.")));
+					 errdetail("one of bitmin or bitmax is not set.")));
 		}
 	}
 	return streamstart;
@@ -765,21 +965,51 @@ deserialise_bitmap(char *charstream)
 	Bitmap *bitmap;
 	char **p_stream = &charstream;
 	int32 elems;
-    int32 bitzero;
+    int32 bitmin;
 	int32 bitmax;
 
 	if (strcmp(charstream, "[]") == 0) {
-		return newBitmap(0, 0);
+		bitmap = newBitmap(0, 0);
+		clearBitmap(bitmap);
 	}
-	bitzero = deserialise_int32(p_stream);
-	bitmax = deserialise_int32(p_stream);
-	bitmap = newBitmap(bitzero, bitmax);
-	elems = ARRAYELEMS(bitzero, bitmax);
+	else {
+		bitmin = deserialise_int32(p_stream);
+		bitmax = deserialise_int32(p_stream);
+		bitmap = newBitmap(bitmin, bitmax);
+		elems = ARRAYELEMS(bitmin, bitmax);
 
-	deserialise_stream(p_stream, elems * sizeof(bitmap->bitset[0]), 
-					   (char *) &(bitmap->bitset[0]));
+		deserialise_stream(p_stream, elems * sizeof(bitmap->bitset[0]), 
+						   (char *) &(bitmap->bitset[0]));
+	}
 	return bitmap;
 }
+
+
+/** 
+ * Compare 2 bitmaps for indexing/sorting purposes
+ * 
+ * @param bitmap1 The first ::Bitmap to be compared
+ * @param bitmap2 The second ::Bitmap to be compared
+ *
+ * @return < 0, 0, or > 0 like strcmp
+ */
+static int
+bitmapCmp(Bitmap *bitmap1,
+		  Bitmap *bitmap2)
+{
+	if (bitmapEqual(bitmap1, bitmap2)) {
+		return 0;
+	}
+	else {
+		char *s1 = serialise_bitmap(bitmap1);
+		char *s2 = serialise_bitmap(bitmap2);
+		int result = strcmp(s1, s2);
+		pfree(s1);
+		pfree(s2);
+		return result;
+	}
+}
+
 
 /*
  * Interface functions follow
@@ -857,7 +1087,7 @@ PG_FUNCTION_INFO_V1(bitmap_bitmin);
 /** 
  * <code>bitmap_bitmin(bitmap bitmap) returns boolean</code>
  * Return the lowest bit set in the bitmap, or NULL if none are set.
- * This relies on bitmap->bitzero always identifying the lowest numbered
+ * This relies on bitmap->bitmin always identifying the lowest numbered
  * bit in the bitset, unless the bitmap is empty.
  *
  * @param fcinfo Params as described_below
@@ -869,17 +1099,17 @@ Datum
 bitmap_bitmin(PG_FUNCTION_ARGS)
 {
     Bitmap *bitmap = PG_GETARG_BITMAP(0);
-    int32 relative_bit = bitmap->bitzero - BITZERO(bitmap->bitzero);
+    int32 relative_bit = bitmap->bitmin - BITZERO(bitmap->bitmin);
 
 	if (bitmap->bitset[0] & bitmasks[relative_bit]) {
-		PG_RETURN_INT32(bitmap->bitzero);
+		PG_RETURN_INT32(bitmap->bitmin);
 	}
-	if (bitmap->bitzero != bitmap->bitmax) {
+	if (bitmap->bitmin != bitmap->bitmax) {
 		ereport(ERROR,
 				(errcode(ERRCODE_INTERNAL_ERROR),
 				 errmsg("Corrupted bitmap"),
 				 errdetail("bitzeo is incorrect for bitmap (range %d..%d).", 
-						   bitmap->bitzero, bitmap->bitmax)));
+						   bitmap->bitmin, bitmap->bitmax)));
 	}
 	PG_RETURN_NULL();
 }
@@ -901,18 +1131,18 @@ Datum
 bitmap_bitmax(PG_FUNCTION_ARGS)
 {
     Bitmap *bitmap = PG_GETARG_BITMAP(0);
-    int32 relative_bit = bitmap->bitmax - BITZERO(bitmap->bitzero);
+    int32 relative_bit = bitmap->bitmax - BITZERO(bitmap->bitmin);
 	int32 elem = BITSET_ELEM(relative_bit);
 
 	if (bitmap->bitset[elem] & bitmasks[BITSET_BIT(relative_bit)]) {
 		PG_RETURN_INT32(bitmap->bitmax);
 	}
-	if (bitmap->bitzero != bitmap->bitmax) {
+	if (bitmap->bitmin != bitmap->bitmax) {
 		ereport(ERROR,
 				(errcode(ERRCODE_INTERNAL_ERROR),
 				 errmsg("Corrupted bitmap"),
-				 errdetail("bitzeo is incorrect for bitmap (range %d..%d).", 
-						   bitmap->bitzero, bitmap->bitmax)));
+				 errdetail("bitmax is incorrect for bitmap (range %d..%d).", 
+						   bitmap->bitmin, bitmap->bitmax)));
 	}
 	PG_RETURN_NULL();
 }
@@ -947,7 +1177,7 @@ bitmap_bits(PG_FUNCTION_ARGS)
         MemoryContextSwitchTo(oldcontext);
 
         state->bitmap = PG_GETARG_BITMAP(0);
-        state->bit = state->bitmap->bitzero;
+        state->bit = state->bitmap->bitmin;
 		funcctx->user_fctx = state;
     }
     
@@ -981,7 +1211,8 @@ bitmap_new_empty(PG_FUNCTION_ARGS)
 {
     Bitmap *bitmap;
 	bitmap = newBitmap(0, 0);
-
+	clearBitmap(bitmap);
+	
     PG_RETURN_BITMAP(bitmap);
 }
 
@@ -1005,7 +1236,8 @@ bitmap_new(PG_FUNCTION_ARGS)
 
     bit = PG_GETARG_INT32(0);
 	bitmap = newBitmap(bit, bit);
-	bitmap = bitmapSetbit(bitmap, bit);
+	clearBitmap(bitmap);
+	doSetBit(bitmap, bit);
 
     PG_RETURN_BITMAP(bitmap);
 }
@@ -1014,7 +1246,10 @@ bitmap_new(PG_FUNCTION_ARGS)
 PG_FUNCTION_INFO_V1(bitmap_setbit);
 /** 
  * <code>bitmap_setbit(bitmap bitmap, bit int4) returns bool</code>
- * Set the given bit in the bitmap, returning TRUE.
+ * Set the given bit in the bitmap, returning TRUE.  This can be used as
+ * an aggregate function in which case the bitmap parameter will be null
+ * for the first call.  In this case simply create a bitmap from the
+ * second argument.
  *
  * @param fcinfo Params as described_below
  * <br><code>bitmap bitmap</code> The bitmap to be manipulated.
@@ -1025,12 +1260,19 @@ Datum
 bitmap_setbit(PG_FUNCTION_ARGS)
 {
     Bitmap *bitmap;
-	int32    bitno;
+	int32   bitno;
 	Bitmap *result;
 
-    bitmap = PG_GETARG_BITMAP(0);
     bitno = PG_GETARG_INT32(1);
-	result = bitmapSetbit(bitmap, bitno);
+	if (PG_ARGISNULL(0)) {
+		result = newBitmap(bitno, bitno);
+		clearBitmap(result);
+		doSetBit(result, bitno);
+	}
+	else {
+		bitmap = PG_GETARG_BITMAP(0);
+		result = bitmapSetbit(bitmap, bitno);
+	}
 
 	PG_RETURN_BITMAP(result);
 }
@@ -1050,8 +1292,8 @@ Datum
 bitmap_testbit(PG_FUNCTION_ARGS)
 {
     Bitmap *bitmap;
-	int32    bitno;
-	bool     result;
+	int32   bitno;
+	bool    result;
 
     bitmap = PG_GETARG_BITMAP(0);
     bitno = PG_GETARG_INT32(1);
@@ -1061,10 +1303,244 @@ bitmap_testbit(PG_FUNCTION_ARGS)
 }
 
 
+PG_FUNCTION_INFO_V1(bitmap_setmin);
+/** 
+ * <code>bitmap_setmin(bitmap bitmap, bitmin int4) returns bitmap</code>
+ * Return a new bitmap having no bits less than bitmin
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap bitmap</code> The bitmap to be manipulated.
+ * <br><code>bitmin int4</code> The new minimum bit.
+ * @return <code>bitmap</code> The new bitmap.
+ */
+Datum
+bitmap_setmin(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap;
+	int32   bitmin;
+	Bitmap *result;
+	
+    bitmap = PG_GETARG_BITMAP(0);
+    bitmin = PG_GETARG_INT32(1);
+	result = copyBitmap(bitmap);
+	result = bitmapSetMin(result, bitmin);
+
+	PG_RETURN_BITMAP(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_setmax);
+/** 
+ * <code>bitmap_setmax(bitmap bitmap, bitmax int4) returns bitmap</code>
+ * Return a new bitmap having no bits greater than bitmax
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap bitmap</code> The bitmap to be manipulated.
+ * <br><code>bitmax int4</code> The new maximum bit.
+ * @return <code>bitmap</code> The new bitmap.
+ */
+Datum
+bitmap_setmax(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap;
+	int32   bitmax;
+	Bitmap *result;
+	
+    bitmap = PG_GETARG_BITMAP(0);
+    bitmax = PG_GETARG_INT32(1);
+	result = copyBitmap(bitmap);
+	result = bitmapSetMax(result, bitmax);
+
+	PG_RETURN_BITMAP(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_equal);
+/** 
+ * <code>bitmap_equal(bitmap1 bitmap, bitmap2 bitmap) returns bool</code>
+ * Return true if the bitmaps are equivalent,
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap1 bitmap</code> The first bitmap
+ * <br><code>bitmap2 bitmap</code> The second bitmap
+ * @return <code>bool</code> true if the bitmaps contain the same bits.
+ */
+Datum
+bitmap_equal(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap1;
+    Bitmap *bitmap2;
+    bool    result;
+
+    bitmap1 = PG_GETARG_BITMAP(0);
+    bitmap2 = PG_GETARG_BITMAP(1);
+	result = bitmapEqual(bitmap1, bitmap2);
+
+	PG_RETURN_BOOL(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_nequal);
+/** 
+ * <code>bitmap_nequal(bitmap1 bitmap, bitmap2 bitmap) returns bool</code>
+ * Return true if the bitmaps are not equivalent,
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap1 bitmap</code> The first bitmap
+ * <br><code>bitmap2 bitmap</code> The second bitmap
+ * @return <code>bool</code> true unless the bitmaps contain the same bits.
+ */
+Datum
+bitmap_nequal(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap1;
+    Bitmap *bitmap2;
+    bool    result;
+
+    bitmap1 = PG_GETARG_BITMAP(0);
+    bitmap2 = PG_GETARG_BITMAP(1);
+	result = !bitmapEqual(bitmap1, bitmap2);
+
+	PG_RETURN_BOOL(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_cmp);
+/** 
+ * <code>bitmap_cmp(bitmap1 bitmap, bitmap2 bitmap) returns bool</code>
+ * Return result of comparison of bitmap1's string representation with
+ *        bitmap2's.
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap1 bitmap</code> The first bitmap
+ * <br><code>bitmap2 bitmap</code> The second bitmap
+ * @return <code>int4</code> result of comparison
+ */
+Datum
+bitmap_cmp(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap1;
+    Bitmap *bitmap2;
+    int32   result;
+
+    bitmap1 = PG_GETARG_BITMAP(0);
+    bitmap2 = PG_GETARG_BITMAP(1);
+	result = bitmapCmp(bitmap1, bitmap2);
+
+	PG_RETURN_INT32(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_lt);
+/** 
+ * <code>bitmap_lt(bitmap1 bitmap, bitmap2 bitmap) returns bool</code>
+ * Return true if bitmap1's string representation should be sorted
+ * 		       earlier than bitmap2's.
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap1 bitmap</code> The first bitmap
+ * <br><code>bitmap2 bitmap</code> The second bitmap
+ * @return <code>bool</code> true unless the bitmaps contain the same bits.
+ */
+Datum
+bitmap_lt(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap1;
+    Bitmap *bitmap2;
+    bool    result;
+
+    bitmap1 = PG_GETARG_BITMAP(0);
+    bitmap2 = PG_GETARG_BITMAP(1);
+	result = bitmapCmp(bitmap1, bitmap2) < 0;
+
+	PG_RETURN_BOOL(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_le);
+/** 
+ * <code>bitmap_le(bitmap1 bitmap, bitmap2 bitmap) returns bool</code>
+ * Return true if bitmap1's string representation should be sorted
+ * 		       earlier than, or the same as, bitmap2's.
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap1 bitmap</code> The first bitmap
+ * <br><code>bitmap2 bitmap</code> The second bitmap
+ * @return <code>bool</code> true unless the bitmaps contain the same bits.
+ */
+Datum
+bitmap_le(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap1;
+    Bitmap *bitmap2;
+    bool    result;
+
+    bitmap1 = PG_GETARG_BITMAP(0);
+    bitmap2 = PG_GETARG_BITMAP(1);
+	result = bitmapCmp(bitmap1, bitmap2) <= 0;
+
+	PG_RETURN_BOOL(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_gt);
+/** 
+ * <code>bitmap_gt(bitmap1 bitmap, bitmap2 bitmap) returns bool</code>
+ * Return true if bitmap1's string representation should be sorted
+ * 		       later than bitmap2's.
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap1 bitmap</code> The first bitmap
+ * <br><code>bitmap2 bitmap</code> The second bitmap
+ * @return <code>bool</code> true unless the bitmaps contain the same bits.
+ */
+Datum
+bitmap_gt(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap1;
+    Bitmap *bitmap2;
+    bool    result;
+
+    bitmap1 = PG_GETARG_BITMAP(0);
+    bitmap2 = PG_GETARG_BITMAP(1);
+	result = bitmapCmp(bitmap1, bitmap2) > 0;
+
+	PG_RETURN_BOOL(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_ge);
+/** 
+ * <code>bitmap_ge(bitmap1 bitmap, bitmap2 bitmap) returns bool</code>
+ * Return true if bitmap1's string representation should be sorted
+ * 		       later than, or the same as, bitmap2's.
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap1 bitmap</code> The first bitmap
+ * <br><code>bitmap2 bitmap</code> The second bitmap
+ * @return <code>bool</code> true unless the bitmaps contain the same bits.
+ */
+Datum
+bitmap_ge(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap1;
+    Bitmap *bitmap2;
+    bool    result;
+
+    bitmap1 = PG_GETARG_BITMAP(0);
+    bitmap2 = PG_GETARG_BITMAP(1);
+	result = bitmapCmp(bitmap1, bitmap2) >= 0;
+
+	PG_RETURN_BOOL(result);
+}
+
+
 PG_FUNCTION_INFO_V1(bitmap_union);
 /** 
  * <code>bitmap_union(bitmap1 bitmap, bitmap2 bitmap) returns bitmap</code>
- * Return the union of 2 bitmaps.
+ * Return the union of 2 bitmaps.  This can be used as an aggregate
+ * function in which case the bitmap1 parameter will be null for the
+ * first call.  In this case simply return the second argument.
  *
  * @param fcinfo Params as described_below
  * <br><code>bitmap1 bitmap</code> The first bitmap
@@ -1078,10 +1554,14 @@ bitmap_union(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     Bitmap *result;
 
-    bitmap1 = PG_GETARG_BITMAP(0);
-    bitmap2 = PG_GETARG_BITMAP(1);
-	result = bitmapUnion(bitmap1, bitmap2);
-
+	bitmap2 = PG_GETARG_BITMAP(1);
+	if (PG_ARGISNULL(0)) {
+		result = copyBitmap(bitmap2);
+	}
+	else {
+		bitmap1 = PG_GETARG_BITMAP(0);
+		result = bitmapUnion(bitmap1, bitmap2);
+	}
 	PG_RETURN_BITMAP(result);
 }
 
@@ -1105,7 +1585,8 @@ bitmap_clearbit(PG_FUNCTION_ARGS)
 
     bitmap = PG_GETARG_BITMAP(0);
     bitno = PG_GETARG_INT32(1);
-	result = bitmapClearbit(bitmap, bitno);
+	result = copyBitmap(bitmap);
+	result = bitmapClearbit(result, bitno);
 
 	PG_RETURN_BITMAP(result);
 }
@@ -1115,7 +1596,9 @@ PG_FUNCTION_INFO_V1(bitmap_intersection);
 /** 
  * <code>bitmap_intersection(bitmap1 bitmap, bitmap2 bitmap) 
  *     returns bitmap</code>
- * Return the intersection of 2 bitmaps.
+ * Return the intersection of 2 bitmaps.  This can be used as an
+ * aggregate function in which case the bitmap1 parameter will be null
+ * for the first call.  In this case simply return the second argument.
  *
  * @param fcinfo Params as described_below
  * <br><code>bitmap1 bitmap</code> The first bitmap
@@ -1129,9 +1612,41 @@ bitmap_intersection(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     Bitmap *result;
 
+	bitmap2 = PG_GETARG_BITMAP(1);
+	if (PG_ARGISNULL(0)) {
+		result = copyBitmap(bitmap2);
+
+	}
+	else {
+		bitmap1 = PG_GETARG_BITMAP(0);
+		result = bitmapIntersect(bitmap1, bitmap2);
+	}
+	PG_RETURN_BITMAP(result);
+}
+
+
+PG_FUNCTION_INFO_V1(bitmap_minus);
+/** 
+ * <code>bitmap_minus(bitmap1 bitmap, bitmap2 bitmap) 
+ *     returns bitmap</code>
+ * Return the bitmap1 with all bits from bitmap2 subtracted (cleared)
+ *     from it.
+ *
+ * @param fcinfo Params as described_below
+ * <br><code>bitmap1 bitmap</code> The first bitmap
+ * <br><code>bitmap2 bitmap</code> The second bitmap
+ * @return <code>bitmap</code> the subtraction of the two bitmaps.
+ */
+Datum
+bitmap_minus(PG_FUNCTION_ARGS)
+{
+    Bitmap *bitmap1;
+    Bitmap *bitmap2;
+    Bitmap *result;
+
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
-	result = bitmapIntersect(bitmap1, bitmap2);
+	result = bitmapMinus(bitmap1, bitmap2);
 
 	PG_RETURN_BITMAP(result);
 }

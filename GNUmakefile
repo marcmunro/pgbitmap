@@ -43,7 +43,7 @@ override CFLAGS := $(CFLAGS) -O0 $(DFORCE_32_BIT)
 
 include $(DEPS)
 
-.PHONY: deps tarball_clean make_deps clean bitmap_clean list help
+.PHONY: deps tarball_clean make_deps clean bitmap_clean list help docs
 
 # Build per-source dependency files for inclusion
 # This ignores header files and any other non-local files (such as
@@ -69,16 +69,21 @@ deps:
 	rm -f $(DEPS)
 	$(MAKE) MAKEFLAGS="$(MAKEFLAGS)" make_deps
 
-# Cleanup after creating a tarball
-tarball_clean:
-	rm -rf $(BITMAP_DIR) bitmap_$(BITMAP_VERSION).tgz
+# Run doxygen to build html docs
+#
+docs:
+	doxygen docs/Doxyfile
 
-# 
-clean: bitmap_clean
+# Target to remove generated and backup files.
+clean: bitmap_clean docs_clean
 
 bitmap_clean:
 	@rm -f PG_VERSION PG_CONFIG $(OBJS) $(DEPS) \
-	    $(BITMAP_CONTROL) $(MODULE_big).so
+	    $(BITMAP_CONTROL) $(MODULE_big).so \
+	    *~ src/*~ test/*~
+
+docs_clean:
+	@rm -rf docs/html docs/*~ 
 
 # Provide a list of the targets buildable by this makefile.
 list help:
@@ -87,7 +92,9 @@ list help:
  all          - build bitmap library\n\
  clean        - remove target and object files\n\
  deps         - recreate the <nnn>.d dependency files\n\
- installcheck - run unit tests on installed extension (requires pgtap)\n\
+ docs         - run doxygen to create html docs\n\
+ test         - run unit tests on installed extension\n\
+ install      - install the extension (may require root)\n\
  help         - show this list of major targets\n\
 \n\
 "

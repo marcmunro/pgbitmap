@@ -2,7 +2,7 @@
  * @file   bitmap.h
  * \code
  *     Author:       Marc Munro
- *     Copyright (c) 2015i, 2018 Marc Munro
+ *     Copyright (c) 2015, 2018 Marc Munro
  *     License:      BSD
  * 
  * \endcode
@@ -14,11 +14,11 @@
 #include "postgres.h"
 #include "funcapi.h"
 
-#ifndef VEIL_DATATYPES
+#ifndef BITMAP_DATATYPES
 /** 
  * Prevent this header from being included multiple times.
  */
-#define VEIL_DATATYPES 1
+#define BITMAP_DATATYPES 1
 
 /* Bitmaps will be based on 64-bit integers if pointer types are 64-bit,
  * unless FORCE_32_BIT is defined.
@@ -27,6 +27,9 @@
 #undef USE_64_BIT
 #else
 #if (SIZEOF_VOID_P == 8)
+/**
+ * Use 64-bit word definitions throughout.
+ */
 #define USE_64_BIT 1
 #else
 #undef USE_64_BIT
@@ -34,8 +37,14 @@
 #endif
 
 #ifdef USE_64_BIT
+/**
+ * Use 64-bit words.
+ */
 #define ELEMBITS 64
 #else
+/**
+ * Use 32-bit words.
+ */
 #define ELEMBITS 32
 #endif
 
@@ -51,37 +60,22 @@
  * @return The bitmask index representing x.
  */
 #ifdef USE_64_BIT
-#define BITZERO(x) (x & 0xffffffffffffffc0)
+#define BITZERO(x) ((x) & 0xffffffffffffffc0)
 #else
-#define BITZERO(x) (x & 0xffffffe0)
+#define BITZERO(x) ((x) & 0xffffffe0)
 #endif
 
 /**
- * Gives the bitmask index for the bitmax value of a bitmap.  See
- * BITZERO() for more information.
- *
- * @param x The bitmax value of a bitmap
- *
- * @return The bitmask index representing x.
- */
-#ifdef USE_64_BIT
-#define BITMAX(x) (x | 0x3f)
-#else
-#define BITMAX(x) (x | 0x1f)
-#endif
-
-/**
- * Gives the index of a bit within the array of 32-bit words that
- * comprise the bitmap.
+ * Gives the index of the word for a given bit, assuming bitmin is zero.
  *
  * @param x The bit in question
  *
  * @return The array index of the bit.
  */
 #ifdef USE_64_BIT
-#define BITSET_ELEM(x) (x >> 6)
+#define BITSET_ELEM(x) ((x) >> 6)
 #else
-#define BITSET_ELEM(x) (x >> 5)
+#define BITSET_ELEM(x) ((x) >> 5)
 #endif
 
 /**
@@ -136,8 +130,14 @@
 #define MAX(a,b) ((a > b)? a: b)
 
 #ifdef USE_64_BIT
+/**
+ * bm_int is the bitmap integer type (a 64-bit value).
+ */
 typedef uint64 bm_int;
 #else
+/**
+ * bm_int is the bitmap integer type (a 32-bit value).
+ */
 typedef uint32 bm_int;
 #endif
 
@@ -148,19 +148,32 @@ typedef uint32 bm_int;
  */
 typedef struct Bitmap {
 	char    vl_len[4];  /**< Standard postgres length header */
-    int32   bitzero;	/**< The index of the lowest bit the bitmap can
-						 * store */
-    int32   bitmax;		/**< The index of the highest bit the bitmap can
-						 * store */
+    int32   bitmin;	    /**< The index of the lowest bit the bitmap has
+						 * stored */
+    int32   bitmax;		/**< The index of the highest bit the bitmap has
+						 * stored */
 	bm_int  bitset[0];  /**< Element zero of the array of int4 values
 						 * comprising the bitmap. */
 } Bitmap;
 
+/**
+ * Defines a boolean type to make our code more readable.
+ */
 typedef unsigned char boolean;
 
+/**
+ * Provide a macro for getting a bitmap datum.
+ */
 #define DatumGetBitmap(x)	((Bitmap *) DatumGetPointer(x))
-#define PG_GETARG_BITMAP(x)	DatumGetBitmap( \
+
+/**
+ * Provide a macro for dealing with bitmap arguments.
+ */
+#define PG_GETARG_BITMAP(x)	DatumGetBitmap(		\
 		PG_DETOAST_DATUM(PG_GETARG_DATUM(x)))
+/**
+ * Provide a macro for returning bitmap results.
+ */
 #define PG_RETURN_BITMAP(x)	PG_RETURN_POINTER(x)
 
 
@@ -174,10 +187,20 @@ extern Datum bitmap_bitmin(PG_FUNCTION_ARGS);
 extern Datum bitmap_bitmax(PG_FUNCTION_ARGS);
 extern Datum bitmap_setbit(PG_FUNCTION_ARGS);
 extern Datum bitmap_testbit(PG_FUNCTION_ARGS);
+extern Datum bitmap_setmin(PG_FUNCTION_ARGS);
+extern Datum bitmap_setmax(PG_FUNCTION_ARGS);
+extern Datum bitmap_equal(PG_FUNCTION_ARGS);
+extern Datum bitmap_nequal(PG_FUNCTION_ARGS);
 extern Datum bitmap_union(PG_FUNCTION_ARGS);
 extern Datum bitmap_clearbit(PG_FUNCTION_ARGS);
 extern Datum bitmap_union(PG_FUNCTION_ARGS);
 extern Datum bitmap_intersection(PG_FUNCTION_ARGS);
+extern Datum bitmap_minus(PG_FUNCTION_ARGS);
+extern Datum bitmap_lt(PG_FUNCTION_ARGS);
+extern Datum bitmap_le(PG_FUNCTION_ARGS);
+extern Datum bitmap_gt(PG_FUNCTION_ARGS);
+extern Datum bitmap_ge(PG_FUNCTION_ARGS);
+extern Datum bitmap_cmp(PG_FUNCTION_ARGS);
 
 
 #endif
