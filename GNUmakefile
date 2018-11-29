@@ -23,6 +23,7 @@ BITMAP_VERSION = $(shell \
     grep default_version bitmap.control | sed 's/[^0-9.]*\([0-9.]*\).*/\1/')
 
 BITMAP_CONTROL = bitmap--$(BITMAP_VERSION).sql
+OLD_BITMAP_CONTROLS = $(shell ls bitmap--*.sql | grep -v $(BITMAP_VERSION))
 
 SUBDIRS = src test 
 EXTRA_CLEAN = $(SRC_CLEAN) 
@@ -79,7 +80,7 @@ clean: bitmap_clean docs_clean
 
 bitmap_clean:
 	@rm -f PG_VERSION PG_CONFIG $(OBJS) $(DEPS) \
-	    $(BITMAP_CONTROL) $(MODULE_big).so \
+	    $(OLD_BITMAP_CONTROLS) $(MODULE_big).so \
 	    *~ src/*~ test/*~
 
 docs_clean:
