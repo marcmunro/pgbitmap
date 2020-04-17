@@ -1,8 +1,8 @@
 # Makefile
 #
-#      Makefile for src directory of bitmap
+#      Makefile for src directory of pgbitmap
 #
-#      Copyright (c) 2015, 2018 Marc Munro
+#      Copyright (c) 2020 Marc Munro
 #      Author:  Marc Munro
 #      License: BSD
 #
@@ -18,7 +18,7 @@
 # "Recursive make considered harmful" for a rationale).
 
 
-SOURCES = src/bitmap.c 
+SOURCES = src/pgbitmap.c 
 
 ifdef EXTENSION
 	LIBDIR=$(DESTDIR)$(datadir)/extension
@@ -26,14 +26,14 @@ else
 	LIBDIR=$(DESTDIR)$(pkglibdir)
 endif
 
-INSTALLED_LIB = $(LIBDIR)/$(addsuffix $(DLSUFFIX), bitmap)
-BITMAP_LIB = $(BUILD_DIR)/$(addsuffix $(DLSUFFIX), bitmap)
+INSTALLED_LIB = $(LIBDIR)/$(addsuffix $(DLSUFFIX), pgbitmap)
+PGBITMAP_LIB = $(BUILD_DIR)/$(addsuffix $(DLSUFFIX), pgbitmap)
 HEADERS = $(wildcard src/*.h)
-SRC_CLEAN = $(BITMAP_LIB)
+SRC_CLEAN = $(PGBITMAP_LIB)
 
-all: $(BITMAP_CONTROL)
+all: $(PGBITMAP_CONTROL)
 
-$(BITMAP_CONTROL): src/bitmap_interface.sqs
-	@echo Creating $(BITMAP_CONTROL)
-	@sed -e 's!@LIBPATH@!$$libdir/bitmap!g' <$< >$@
+$(PGBITMAP_CONTROL): src/pgbitmap_interface.sqs
+	@echo Creating $(PGBITMAP_CONTROL)
+	@sed -e 's!@LIBPATH@!$$libdir/pgbitmap!g' <$< >$@
 

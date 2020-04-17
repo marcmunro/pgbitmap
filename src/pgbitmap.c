@@ -1,8 +1,8 @@
 /**
- * @file   bitmap.c
+ * @file   pgbitmap.c
  * \code
  *     Author:       Marc Munro
- *     Copyright (c) 2015, 2018 Marc Munro
+ *     Copyright (c) 2020 Marc Munro
  *     License:      BSD
  * 
  * \endcode
@@ -11,7 +11,7 @@
  * 
  */
 
-#include "bitmap.h"
+#include "pgbitmap.h"
 
 PG_MODULE_MAGIC;
 
@@ -218,8 +218,12 @@ b64_decode(const char *src, unsigned len, char *dst)
 
 
 
+
 /** 
- * Predicate identifying whether the bitmap is empty.
+ * Predicate identifying whether the bitmap is empty.  This takes a
+ * pretty simplistic view of what it means to be empty: any properly
+ * contructed non-empty bitmap will have bits set in at least the bitmin
+ * and bitmax positions,
  * 
  * @param bitmap The ::Bitmap being scanned.
  * 
@@ -235,7 +239,7 @@ bitmapEmpty(Bitmap *bitmap)
 /** 
  * Clear all bits in a ::Bitmap.
  * 
- * @param bitmap The ::Bitmap in which all bits are to be cleared
+ * @param bitmap The ::Bitmap within which all bits are to be cleared
  */
 static void
 clearBitmap(Bitmap *bitmap)
@@ -261,14 +265,14 @@ static Bitmap *
 newBitmap(int32 min, int32 max)
 {
 	int32 elems = ARRAYELEMS(min, max);
-	int32 size = sizeof(Bitmap) + (sizeof(bm_int) * elems);
+	int32 size = sizeof(Bitmap) + (sizeof(bm_int) * (elems + DBG_ELEMS));
 	Bitmap *bitmap = bitmap = palloc(size);
-
+	
 	SET_VARSIZE(bitmap, size);
 	
 	bitmap->bitmin = min;
 	bitmap->bitmax = max;
-
+	SETCANARY(bitmap);
 	return bitmap;
 }
 
@@ -300,6 +304,39 @@ bitmapTestbit(Bitmap *bitmap,
 	}
 }
 
+#ifdef BITMAP_DEBUG
+static void
+printBitmap(char *label, Bitmap *bitmap)
+{
+	int i;
+	fprintf(stderr, "%s: %s<%d, %d>:", label,
+			CHKCANARY(bitmap)? "": "BROKEN BITMAP",
+			bitmap->bitmin, bitmap->bitmax);
+	for (i = bitmap->bitmin; i <= bitmap->bitmax; i++) {
+		fprintf(stderr, "%c", bitmapTestbit(bitmap, i)? '1': '0');
+	}
+	
+	fprintf(stderr, ":\n");
+}
+
+static char *
+bitmapString(Bitmap *bitmap)
+{
+	static char result[200];
+	int i;
+	char *here;
+	i = sprintf(result, "%s<%d, %d>",
+				CHKCANARY(bitmap)? "": "BROKEN BITMAP:",
+				bitmap->bitmin, bitmap->bitmax);
+	here = result + i;
+	for (i = bitmap->bitmin; i <= bitmap->bitmax; i++) {
+		here += sprintf(here, "%c", bitmapTestbit(bitmap, i)? '1': '0');
+	}
+		
+	return result;
+}
+#endif
+
 /** 
  * Create a copy of a bitmap.
  * 
@@ -315,7 +352,7 @@ copyBitmap(Bitmap *bitmap)
 
 	result = newBitmap(bitmap->bitmin, bitmap->bitmax);
 	
-	for (i = ARRAYELEMS(bitmap->bitmin, bitmap->bitmax); i >= 0; i--) {
+	for (i = ARRAYELEMS(bitmap->bitmin, bitmap->bitmax) - 1; i >= 0; i--) {
 		result->bitset[i] = bitmap->bitset[i];
 	}
 	return result;
@@ -397,10 +434,12 @@ doSetBit(Bitmap *bitmap,
     element = BITSET_ELEM(relative_bit);
     bitmap->bitset[element] |= bitmasks[BITSET_BIT(relative_bit)];
 
-	if (bit < bitmap->bitmin) {
+	/* The tests below handle the case where the bitmap was previously
+	 * empty. */
+	if ((bit < bitmap->bitmin) || !bitmapTestbit(bitmap, bitmap->bitmin)) {
 		bitmap->bitmin = bit;
 	}
-	else if (bit > bitmap->bitmax) {
+	if ((bit > bitmap->bitmax)  || !bitmapTestbit(bitmap, bitmap->bitmax)) {
 		bitmap->bitmax = bit;
 	}
 }
@@ -737,7 +776,6 @@ bitmapUnion(Bitmap *bitmap1,
 		}
 		result->bitset[to] = elem;
 	}
-
 	return result;
 }
 
@@ -1234,6 +1272,9 @@ bitmap_new(PG_FUNCTION_ARGS)
     Bitmap *bitmap;
 	int32   bit;
 
+	if (PG_ARGISNULL(0)) {
+		PG_RETURN_NULL();
+	}
     bit = PG_GETARG_INT32(0);
 	bitmap = newBitmap(bit, bit);
 	clearBitmap(bitmap);
@@ -1263,15 +1304,24 @@ bitmap_setbit(PG_FUNCTION_ARGS)
 	int32   bitno;
 	Bitmap *result;
 
-    bitno = PG_GETARG_INT32(1);
 	if (PG_ARGISNULL(0)) {
+		if (PG_ARGISNULL(1)) {
+			PG_RETURN_NULL();
+		}
+		bitno = PG_GETARG_INT32(1);
 		result = newBitmap(bitno, bitno);
 		clearBitmap(result);
 		doSetBit(result, bitno);
 	}
 	else {
+		bitno = PG_GETARG_INT32(1);
 		bitmap = PG_GETARG_BITMAP(0);
-		result = bitmapSetbit(bitmap, bitno);
+		if (PG_ARGISNULL(1)) {
+			result = copyBitmap(bitmap);
+		}
+		else {
+			result = bitmapSetbit(bitmap, bitno);
+		}
 	}
 
 	PG_RETURN_BITMAP(result);
@@ -1295,6 +1345,9 @@ bitmap_testbit(PG_FUNCTION_ARGS)
 	int32   bitno;
 	bool    result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap = PG_GETARG_BITMAP(0);
     bitno = PG_GETARG_INT32(1);
 	result = bitmapTestbit(bitmap, bitno);
@@ -1320,6 +1373,9 @@ bitmap_setmin(PG_FUNCTION_ARGS)
 	int32   bitmin;
 	Bitmap *result;
 	
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap = PG_GETARG_BITMAP(0);
     bitmin = PG_GETARG_INT32(1);
 	result = copyBitmap(bitmap);
@@ -1346,6 +1402,9 @@ bitmap_setmax(PG_FUNCTION_ARGS)
 	int32   bitmax;
 	Bitmap *result;
 	
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap = PG_GETARG_BITMAP(0);
     bitmax = PG_GETARG_INT32(1);
 	result = copyBitmap(bitmap);
@@ -1372,6 +1431,9 @@ bitmap_equal(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     bool    result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
 	result = bitmapEqual(bitmap1, bitmap2);
@@ -1397,6 +1459,9 @@ bitmap_nequal(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     bool    result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
 	result = !bitmapEqual(bitmap1, bitmap2);
@@ -1423,6 +1488,9 @@ bitmap_cmp(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     int32   result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
 	result = bitmapCmp(bitmap1, bitmap2);
@@ -1449,6 +1517,9 @@ bitmap_lt(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     bool    result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
 	result = bitmapCmp(bitmap1, bitmap2) < 0;
@@ -1475,6 +1546,9 @@ bitmap_le(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     bool    result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
 	result = bitmapCmp(bitmap1, bitmap2) <= 0;
@@ -1501,6 +1575,9 @@ bitmap_gt(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     bool    result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
 	result = bitmapCmp(bitmap1, bitmap2) > 0;
@@ -1527,6 +1604,9 @@ bitmap_ge(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     bool    result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
 	result = bitmapCmp(bitmap1, bitmap2) >= 0;
@@ -1554,13 +1634,24 @@ bitmap_union(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     Bitmap *result;
 
-	bitmap2 = PG_GETARG_BITMAP(1);
 	if (PG_ARGISNULL(0)) {
-		result = copyBitmap(bitmap2);
+		if (PG_ARGISNULL(1)) {
+			PG_RETURN_NULL();
+		}
+		else {
+			bitmap2 = PG_GETARG_BITMAP(1);
+			result = copyBitmap(bitmap2);
+		}
 	}
 	else {
 		bitmap1 = PG_GETARG_BITMAP(0);
-		result = bitmapUnion(bitmap1, bitmap2);
+		if (PG_ARGISNULL(1)) {
+			result = copyBitmap(bitmap1);
+		}
+		else {
+			bitmap2 = PG_GETARG_BITMAP(1);
+			result = bitmapUnion(bitmap1, bitmap2);
+		}
 	}
 	PG_RETURN_BITMAP(result);
 }
@@ -1583,6 +1674,9 @@ bitmap_clearbit(PG_FUNCTION_ARGS)
 	int32    bitno;
 	Bitmap *result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap = PG_GETARG_BITMAP(0);
     bitno = PG_GETARG_INT32(1);
 	result = copyBitmap(bitmap);
@@ -1612,13 +1706,19 @@ bitmap_intersection(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     Bitmap *result;
 
-	bitmap2 = PG_GETARG_BITMAP(1);
 	if (PG_ARGISNULL(0)) {
+		if (PG_ARGISNULL(1)) {
+			PG_RETURN_NULL();
+		}
+		bitmap2 = PG_GETARG_BITMAP(1);
 		result = copyBitmap(bitmap2);
-
 	}
 	else {
 		bitmap1 = PG_GETARG_BITMAP(0);
+		if (PG_ARGISNULL(1)) {
+			result = copyBitmap(bitmap1);
+		}
+		bitmap2 = PG_GETARG_BITMAP(1);
 		result = bitmapIntersect(bitmap1, bitmap2);
 	}
 	PG_RETURN_BITMAP(result);
@@ -1644,6 +1744,9 @@ bitmap_minus(PG_FUNCTION_ARGS)
     Bitmap *bitmap2;
     Bitmap *result;
 
+	if (PG_ARGISNULL(0) || PG_ARGISNULL(1)) {
+		PG_RETURN_NULL();
+	}
     bitmap1 = PG_GETARG_BITMAP(0);
     bitmap2 = PG_GETARG_BITMAP(1);
 	result = bitmapMinus(bitmap1, bitmap2);

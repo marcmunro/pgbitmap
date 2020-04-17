@@ -1,8 +1,8 @@
 # Makefile
 #
-#      Makefile for test directory of bitmap
+#      Makefile for test directory of pgbitmap
 #
-#      Copyright (c) 2015, 2018 Marc Munro
+#      Copyright (c) 2020 Marc Munro
 #      Author:  Marc Munro
 #      License: BSD
 #

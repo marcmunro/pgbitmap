@@ -30,6 +30,13 @@ There are no known bugs or deficiencies.  If you find any problems or
 want enhancements, contact me and I will do what I can to respond
 quickly. 
 
+Change History
+==============
+
+0.2 (alpha) Initial release
+
+0.3 (alpha) Fix for bitmap corruption when adding bit to empty bitmap.
+
 Why not use the Postgres Bitstring Type?
 ========================================
 
@@ -385,9 +392,6 @@ To build the extension, followed by:
 To install it.  You may then need to stop and restart your database
 service to have postgres recognise the extension.
 
-```
-  $ sudo make install
-```
 To test the installation use:
 
 ```

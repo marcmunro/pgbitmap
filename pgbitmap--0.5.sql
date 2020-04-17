@@ -1,10 +1,10 @@
 /* ----------
- * bitmap_interface.sqs (or a file derived from it)
+ * pgbitmap_interface.sqs (or a file derived from it)
  *
- *      Source file from which bitmap--<version>.sql is generated using
+ *      Source file from which pgbitmap--<version>.sql is generated using
  *	sed. 
  *
- *      Copyright (c) 2015, 2018 Marc Munro
+ *      Copyright (c) 2020 Marc Munro
  *      Author:  Marc Munro
  *	License: BSD
  *
@@ -14,7 +14,7 @@
 
 create 
 function bitmap_in(textin cstring) returns bitmap
-     as '$libdir/bitmap', 'bitmap_in'
+     as '$libdir/pgbitmap', 'bitmap_in'
      language C immutable strict;
 
 comment on function bitmap_in(cstring) is
@@ -23,7 +23,7 @@ comment on function bitmap_in(cstring) is
 
 create 
 function bitmap_out(bitmap bitmap) returns cstring
-     as '$libdir/bitmap', 'bitmap_out'
+     as '$libdir/pgbitmap', 'bitmap_out'
      language C immutable strict;
 
 comment on function bitmap_out(bitmap) is
@@ -45,7 +45,7 @@ security purposes.';
 
 create
 function bits(bitmap bitmap) returns setof int4
-     as '$libdir/bitmap', 'bitmap_bits'
+     as '$libdir/pgbitmap', 'bitmap_bits'
      language C immutable strict;
 
 comment on function bits(bitmap) is
@@ -54,7 +54,7 @@ comment on function bits(bitmap) is
 
 create
 function bitmap() returns bitmap
-     as '$libdir/bitmap', 'bitmap_new_empty'
+     as '$libdir/pgbitmap', 'bitmap_new_empty'
      language C immutable strict;
 
 comment on function bitmap() is
@@ -62,7 +62,7 @@ comment on function bitmap() is
 
 create
 function bitmap(bitno int4) returns bitmap
-     as '$libdir/bitmap', 'bitmap_new'
+     as '$libdir/pgbitmap', 'bitmap_new'
      language C immutable strict;
 
 comment on function bitmap(int4) is
@@ -71,7 +71,7 @@ comment on function bitmap(int4) is
 
 create 
 function is_empty(bitmap bitmap) returns boolean
-     as '$libdir/bitmap', 'bitmap_is_empty'
+     as '$libdir/pgbitmap', 'bitmap_is_empty'
      language C immutable strict;
 
 comment on function is_empty(bitmap) is
@@ -80,7 +80,7 @@ comment on function is_empty(bitmap) is
 
 create 
 function bitmin(bitmap bitmap) returns int4
-     as '$libdir/bitmap', 'bitmap_bitmin'
+     as '$libdir/pgbitmap', 'bitmap_bitmin'
      language C immutable strict;
 
 comment on function bitmin(bitmap) is
@@ -90,7 +90,7 @@ bits';
 
 create 
 function bitmax(bitmap bitmap) returns int4
-     as '$libdir/bitmap', 'bitmap_bitmax'
+     as '$libdir/pgbitmap', 'bitmap_bitmax'
      language C immutable strict;
 
 comment on function bitmax(bitmap) is
@@ -100,7 +100,7 @@ bits';
 
 create 
 function bitmap_setbit(bitmap bitmap, bitno int4) returns bitmap
-     as '$libdir/bitmap', 'bitmap_setbit'
+     as '$libdir/pgbitmap', 'bitmap_setbit'
      language C immutable strict;
 
 comment on function bitmap_setbit(bitmap, int4) is
@@ -115,7 +115,7 @@ create operator + (
 
 create 
 function bitmap_testbit(bitmap bitmap, bitno int4) returns bool
-     as '$libdir/bitmap', 'bitmap_testbit'
+     as '$libdir/pgbitmap', 'bitmap_testbit'
      language C immutable strict;
 
 comment on function bitmap_testbit(bitmap, int4) is
@@ -130,7 +130,7 @@ create operator ? (
 
 create 
 function bitmap_setmin(bitmap bitmap, bitmin int4) returns bitmap
-     as '$libdir/bitmap', 'bitmap_setmin'
+     as '$libdir/pgbitmap', 'bitmap_setmin'
      language C immutable strict;
 
 comment on function bitmap_setmin(bitmap, int4) is
@@ -138,7 +138,7 @@ comment on function bitmap_setmin(bitmap, int4) is
 
 create 
 function bitmap_setmax(bitmap bitmap, bitmax int4) returns bitmap
-     as '$libdir/bitmap', 'bitmap_setmax'
+     as '$libdir/pgbitmap', 'bitmap_setmax'
      language C immutable strict;
 
 comment on function bitmap_setmin(bitmap, int4) is
@@ -146,7 +146,7 @@ comment on function bitmap_setmin(bitmap, int4) is
 
 create 
 function bitmap_equal(bitmap1 bitmap, bitmap2 bitmap) returns bool
-     as '$libdir/bitmap', 'bitmap_equal'
+     as '$libdir/pgbitmap', 'bitmap_equal'
      language C immutable strict;
 
 comment on function bitmap_equal(bitmap, bitmap) is
@@ -162,7 +162,7 @@ create operator = (
 
 create 
 function bitmap_nequal(bitmap1 bitmap, bitmap2 bitmap) returns bool
-     as '$libdir/bitmap', 'bitmap_nequal'
+     as '$libdir/pgbitmap', 'bitmap_nequal'
      language C immutable strict;
 
 comment on function bitmap_nequal(bitmap, bitmap) is
@@ -178,7 +178,7 @@ create operator <> (
 
 create 
 function bitmap_lt(bitmap1 bitmap, bitmap2 bitmap) returns bool
-     as '$libdir/bitmap', 'bitmap_lt'
+     as '$libdir/pgbitmap', 'bitmap_lt'
      language C immutable strict;
 
 create operator < (
@@ -191,7 +191,7 @@ create operator < (
 
 create 
 function bitmap_le(bitmap1 bitmap, bitmap2 bitmap) returns bool
-     as '$libdir/bitmap', 'bitmap_le'
+     as '$libdir/pgbitmap', 'bitmap_le'
      language C immutable strict;
 
 create operator <= (
@@ -204,7 +204,7 @@ create operator <= (
 
 create 
 function bitmap_gt(bitmap1 bitmap, bitmap2 bitmap) returns bool
-     as '$libdir/bitmap', 'bitmap_gt'
+     as '$libdir/pgbitmap', 'bitmap_gt'
      language C immutable strict;
 
 create operator > (
@@ -217,7 +217,7 @@ create operator > (
 
 create 
 function bitmap_ge(bitmap1 bitmap, bitmap2 bitmap) returns bool
-     as '$libdir/bitmap', 'bitmap_ge'
+     as '$libdir/pgbitmap', 'bitmap_ge'
      language C immutable strict;
 
 create operator >= (
@@ -230,7 +230,7 @@ create operator >= (
 
 create
 function bitmap_cmp(bitmap, bitmap) returns int4
-    as '$libdir/bitmap', 'bitmap_ge'
+    as '$libdir/pgbitmap', 'bitmap_ge'
     language C immutable strict;
 
 create operator class bitmap_ops
@@ -246,7 +246,7 @@ create operator class bitmap_ops
 
 create 
 function bitmap_union(bitmap1 bitmap, bitmap2 bitmap) returns bitmap
-     as '$libdir/bitmap', 'bitmap_union'
+     as '$libdir/pgbitmap', 'bitmap_union'
      language C immutable strict;
 
 comment on function bitmap_union(bitmap, bitmap) is
@@ -262,7 +262,7 @@ create operator + (
 
 create 
 function bitmap_clearbit(bitmap bitmap, bitno int4) returns bitmap
-     as '$libdir/bitmap', 'bitmap_clearbit'
+     as '$libdir/pgbitmap', 'bitmap_clearbit'
      language C immutable strict;
 
 comment on function bitmap_clearbit(bitmap, int4) is
@@ -277,7 +277,7 @@ create operator - (
 
 create 
 function bitmap_intersection(bitmap1 bitmap, vitmap2 bitmap) returns bitmap
-     as '$libdir/bitmap', 'bitmap_intersection'
+     as '$libdir/pgbitmap', 'bitmap_intersection'
      language C immutable strict;
 
 comment on function bitmap_intersection(bitmap, bitmap) is
@@ -292,7 +292,7 @@ create operator * (
 
 
 create function bitmap_int_agg(bitmap bitmap, bitno int4) returns bitmap
-     as '$libdir/bitmap', 'bitmap_setbit'
+     as '$libdir/pgbitmap', 'bitmap_setbit'
      language C immutable;
 
 create aggregate bitmap_of(integer) (
@@ -305,7 +305,7 @@ comment on aggregate bitmap_of(integer) is
 
 create function bitmap_union_agg(bitmap1 bitmap,
                                  bitmap2 bitmap) returns bitmap
-     as '$libdir/bitmap', 'bitmap_union'
+     as '$libdir/pgbitmap', 'bitmap_union'
      language C immutable;
 
 create aggregate union_of(bitmap) (
@@ -318,7 +318,7 @@ comment on aggregate union_of(bitmap) is
 
 create function bitmap_intersect_agg(bitmap1 bitmap,
                                      bitmap2 bitmap) returns bitmap
-     as '$libdir/bitmap', 'bitmap_intersection'
+     as '$libdir/pgbitmap', 'bitmap_intersection'
      language C immutable;
 
 create aggregate intersect_of(bitmap) (
@@ -354,7 +354,7 @@ comment on function to_bitmap(int[]) is
 'Convert an array of integers into a bitmap.';
 
 create function bitmap_minus(bitmap1 bitmap, bitmap2 bitmap) returns bitmap
-     as '$libdir/bitmap', 'bitmap_minus'
+     as '$libdir/pgbitmap', 'bitmap_minus'
      language C immutable strict;
 
 comment on function bitmap_minus(bitmap, bitmap) is

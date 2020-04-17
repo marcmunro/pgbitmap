@@ -1,8 +1,8 @@
 /**
- * @file   bitmap.h
+ * @file   pgbitmap.h
  * \code
  *     Author:       Marc Munro
- *     Copyright (c) 2015, 2018 Marc Munro
+ *     Copyright (c) 2020 Marc Munro
  *     License:      BSD
  * 
  * \endcode
@@ -47,6 +47,31 @@
  */
 #define ELEMBITS 32
 #endif
+
+//#define BITMAP_DEBUG 1
+#ifdef BITMAP_DEBUG
+#define DBG_ELEMS 1
+#define SETCANARY(b) do {									\
+		b->bitset[ARRAYELEMS(b->bitmin, b->bitmax)] = 0;	\
+		b->canary = 0;										\
+	} while (false)
+
+#define CHKCANARY(b)										\
+	((b->bitset[ARRAYELEMS(b->bitmin, b->bitmax)] == 0) &&	\
+	 (b->canary == 0))
+
+#ifdef USE_64_BIT
+#define CANARYELEM uint64 canary;
+#else
+#define CANARYELEM uint32 canary;
+#endif
+#else
+#define DBG_ELEMS 0
+#define SETCANARY(b) 
+#define CHKCANARY(b) true
+#define CANARYELEM
+#endif
+
 
 
 /**
@@ -152,6 +177,7 @@ typedef struct Bitmap {
 						 * stored */
     int32   bitmax;		/**< The index of the highest bit the bitmap has
 						 * stored */
+	CANARYELEM
 	bm_int  bitset[0];  /**< Element zero of the array of int4 values
 						 * comprising the bitmap. */
 } Bitmap;

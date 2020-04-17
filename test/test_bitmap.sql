@@ -103,7 +103,7 @@ end;
 $$
 language 'plpgsql' security definer volatile;
 
-create extension bitmap;
+create extension pgbitmap;
 
 -- We put expect() into the where clause so that no rows are returned
 -- from each test.  This enables much cleaner output.
@@ -397,6 +397,74 @@ select null
 -- Publish the set of tests that we have run
 select 'Tests run: ' || to_array(tests_run)::text as "Passed tests"
   from my_tests;
+
+-- Misceleaneous
+-- Bitmap corruption bug in version 0.2
+with x as (select (bitmap() + 1)::text)
+select null from x
+ where record_test(19);
+
+-- Server crash bug in version 0.2
+select union_of(x) from (select null::bitmap as x) x;
+
+-- Null handling bug in version 0.3alpha
+create or replace
+function test3a(
+    param in integer,
+    privs out bitmap,
+    x out integer)
+  returns setof record as
+$$
+with base(ord, priv) as
+(
+  values (1, 1),
+         (2, null),
+	 (3, 3)
+),
+base2(ord, priv) as
+(
+  values (4, 4),
+         (5, null),
+	 (6, 6)
+),
+set1 as
+(
+  select bitmap_of(priv)
+  from base
+),
+set2 as
+(
+  select bitmap_of(priv)
+  from base2
+),
+set3(ord, privs, x) as
+(
+  select param, bitmap_of(priv), 1
+  from base2
+  union
+  select 2, null, 1
+  union
+  select 3, bitmap_of(priv), 1
+  from base
+),
+set4(privs, x) as
+(
+  select union_of(privs), x
+    from set3
+   group by x
+)
+select privs, x
+  from set4;
+
+$$
+language 'sql';
+
+select null
+  from test3a(1) x
+ cross join test3a(4) y
+ where record_test(20)
+    or expect(x.privs = y.privs, true,
+              'test3a bitmaps are not equal');
 
 rollback;
 \echo ALL TESTS PASSED
