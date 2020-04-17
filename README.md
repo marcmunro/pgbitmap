@@ -37,6 +37,8 @@ Change History
 
 0.3 (alpha) Fix for bitmap corruption when adding bit to empty bitmap.
 
+0.5 (alpha) Change name of extension to pgbitmap from bitmap.
+
 Why not use the Postgres Bitstring Type?
 ========================================
 
