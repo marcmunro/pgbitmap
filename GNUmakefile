@@ -80,7 +80,7 @@ docs:
 clean: pgbitmap_clean docs_clean
 
 pgbitmap_clean:
-	@rm -f PG_VERSION PG_CONFIG $(OBJS) $(DEPS) \
+	@rm -f PG_VERSION PG_CONFIG $(OBJS) \
 	    $(OLD_PGBITMAP_CONTROLS) $(MODULE_big).so \
 	    *~ src/*~ test/*~
 
