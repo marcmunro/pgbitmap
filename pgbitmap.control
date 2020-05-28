@@ -1,0 +1,16 @@
+# pgbitmap.control
+#
+#      Postgres extension control file for pgbitmap
+#
+#      Copyright (c) 2020 Marc Munro
+#      Author:  Marc Munro
+#      License: BSD
+#
+
+directory       = 'extension'
+default_version = '0.5'
+module_pathname = '$libdir/pgbitmap'
+superuser       = true
+relocatable     = false
+
+comment = 'Provides a bitmap data type.'
