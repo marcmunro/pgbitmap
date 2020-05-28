@@ -1,0 +1,7 @@
+<map id="deserialise_bitmap" name="deserialise_bitmap">
+<area shape="rect" id="node2" href="$pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="217,5,308,32"/>
+<area shape="rect" id="node3" href="$pgbitmap_8c.html#a2b6a03169577b99c1bfe2887508df7fd" title="clearBitmap" alt="" coords="215,56,311,83"/>
+<area shape="rect" id="node4" href="$pgbitmap_8c.html#a9ba42b65382d635dfd36d6aca3a435c3" title="deserialise_int32" alt="" coords="198,107,327,133"/>
+<area shape="rect" id="node5" href="$pgbitmap_8c.html#a4306eb2ce4ce2cf1c08bd81c1021839d" title="deserialise_stream" alt="" coords="192,157,333,184"/>
+<area shape="rect" id="node6" href="$pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="381,157,465,184"/>
+</map>

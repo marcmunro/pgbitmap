@@ -1,0 +1,8 @@
+<map id="reduceBitmap" name="reduceBitmap">
+<area shape="rect" id="node2" href="$pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="161,31,269,57"/>
+<area shape="rect" id="node3" href="$pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="498,5,603,32"/>
+<area shape="rect" id="node4" href="$pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="317,56,440,83"/>
+<area shape="rect" id="node5" href="$pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="509,56,593,83"/>
+<area shape="rect" id="node6" href="$pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="494,107,607,133"/>
+<area shape="rect" id="node7" href="$pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="488,157,613,184"/>
+</map>

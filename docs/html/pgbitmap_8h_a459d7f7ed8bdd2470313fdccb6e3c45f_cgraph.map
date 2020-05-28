@@ -1,0 +1,18 @@
+<map id="bitmap_clearbit" name="bitmap_clearbit">
+<area shape="rect" id="node2" href="$pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="689,5,784,32"/>
+<area shape="rect" id="node4" href="$pgbitmap_8c.html#a6784edb3ed93c2ef25c9006f077f8a04" title="bitmapClearbit" alt="" coords="520,157,631,184"/>
+<area shape="rect" id="node13" href="$pgbitmap_8c.html#a3083ed0866ef513f208ee8b0b204bcfa" title="bitmap_intersection" alt="" coords="169,107,313,133"/>
+<area shape="rect" id="node3" href="$pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="847,221,938,248"/>
+<area shape="rect" id="node5" href="$pgbitmap_8c.html#aacce43ba4627ec4927cc6d83e88166c1" title="doClearBit" alt="" coords="693,157,781,184"/>
+<area shape="rect" id="node6" href="$pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="683,208,791,235"/>
+<area shape="rect" id="node7" href="$pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="839,95,947,121"/>
+<area shape="rect" id="node8" href="$pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="1175,69,1281,96"/>
+<area shape="rect" id="node9" href="$pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="995,120,1117,147"/>
+<area shape="rect" id="node10" href="$pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="1186,171,1270,197"/>
+<area shape="rect" id="node11" href="$pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="1171,221,1285,248"/>
+<area shape="rect" id="node12" href="$pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="1165,120,1291,147"/>
+<area shape="rect" id="node14" href="$pgbitmap_8c.html#a098b1f61deffa1153b3e0ab078020819" title="bitmapIntersect" alt="" coords="516,208,635,235"/>
+<area shape="rect" id="node15" href="$pgbitmap_8c.html#a5057baf2a406be73117e928e162b537f" title="bitmap_minus" alt="" coords="361,107,468,133"/>
+<area shape="rect" id="node16" href="$pgbitmap_8c.html#a94a046ec3f37a7c30d3c724cd99a086b" title="bitmapMinus" alt="" coords="525,107,625,133"/>
+<area shape="rect" id="node17" href="$pgbitmap_8c.html#a506a4e39a8638fd03a3a96dbbe4ddc43" title="bitmapEmpty" alt="" coords="685,107,788,133"/>
+</map>
