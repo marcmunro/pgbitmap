@@ -2,7 +2,6 @@
 # Figure out where to find pg_config.  This is primarily build for
 # debian and debian like systems where multiple versions of postgres may
 # be installed.
-
 # Return a simplified (2-part) version string.
 #
 strip_version()
@@ -45,6 +44,13 @@ else
     # Maybe the correct pg_config is where it claims to be.
     #
     if ver=`pgver $1`; then
+	major_ver=`echo "${ver}" | cut -d. -f1`
+	if [ "0${major_ver}" -ge 10 ]; then
+	    # This is a postgres version after pg 10, when version
+	    # numbering changed.  We now only need the major part of
+	    # the version number.
+	    ver=${major_ver}
+	fi
         if cver=`pg_config --version | strip_version`; then
             if [ "x${cver}" = "x${ver}" ]; then
                 which pg_config > PG_CONFIG

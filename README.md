@@ -39,6 +39,15 @@ Change History
 
 0.5 (alpha) Change name of extension to pgbitmap from bitmap.
 
+0.6 (alpha) Minor fixes to Makefiles find_pg_config and docs
+
+Doxygen Docs
+============
+
+`pgbitmap` is documented internally using Doxygen, with this page
+acting as the start page.  The current docs can be found
+[here](https://marcmunro.github.io/pgbitmap/docs/html/index.html).
+
 Why not use the Postgres Bitstring Type?
 ========================================
 
@@ -380,7 +389,20 @@ group of offices, we could use something like this:
 Building pgbitmap
 -----------------
 
-Pgbitmap is built using the standard Postgres PGXS build mechanism. 
+Pgbitmap is built using the standard Postgres PGXS build mechanism
+as described here
+[https://www.postgresql.org/docs/12/extend-pgxs.html].
+
+The build will need to be able to find the pg_config executable that
+matches your Postgres version.  It will attempt to find this using
+`find_pg_config ` (in the top-level pgbitmap directory).  If it cannot
+find pg_config the build will fail.
+
+You can manually define the location in the `PG_CONFIG` file:
+```
+  $ echo <path to pg_config> >PG_CONFIG
+```
+
 From the pgbitmap directory (the root directory of the extension), use
 the following commands:
 ```

@@ -63,6 +63,7 @@ include $(DEPS)
 # Target used by recursive call from deps target below.  This ensures
 # that make deps always rebuilds the dep files even if they are up to date.
 make_deps: $(DEPS)
+	@>/dev/null
 
 # Target that rebuilds all dep files unconditionally.  There should be a
 # simpler way to do this using .PHONY but I can't figure out how.

@@ -17,8 +17,8 @@
 # possibly misguided, attempt to avoid recursive make (see the article
 # "Recursive make considered harmful" for a rationale).
 
-.PHONY: unit check test
+.PHONY: unit test
 
 # You can run this using several target names.
-unit check test:
+unit test:
 	psql -f test/test_bitmap.sql
