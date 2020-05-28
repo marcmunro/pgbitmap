@@ -5,7 +5,8 @@ This extension creates a space-optimised, non-sparse, bitmap type for
 postgres.
 
 A bitmap is an array of bits, indexed by an integer.  Bitmaps provide an
-efficient means to implement sets and provide operations for:
+efficient means to implement sets and `pgbitmap` provides operations
+for: 
 
 - creating new bitmaps;
 - adding an element to a bitmap;
