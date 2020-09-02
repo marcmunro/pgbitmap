@@ -100,13 +100,14 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li>aggregating bits, and bitmaps, into bitmaps.</li>
 </ul>
 <h1>Status </h1>
-<p>This is an alpha release. The plan is to give it real-life usage and then re-release as Beta, before finally releasing a production version if all looks well.</p>
+<p>This is a beta release. The plan is to give it real-life usage before releasing a production version if all looks well.</p>
 <p>There are no known bugs or deficiencies. If you find any problems or want enhancements, contact me and I will do what I can to respond quickly.</p>
 <h1>Change History </h1>
 <p>0.2 (alpha) Initial release</p>
 <p>0.3 (alpha) Fix for bitmap corruption when adding bit to empty bitmap.</p>
 <p>0.5 (alpha) Change name of extension to pgbitmap from bitmap.</p>
 <p>0.6 (alpha) Minor fixes to Makefiles find_pg_config and docs</p>
+<p>0.9 (beta) Minor updates to documentation and to allow distribution through pgxn. Updated to Beta status as it all seems stable enough.</p>
 <h1>Doxygen Docs </h1>
 <p><code>pgbitmap</code> is documented internally using Doxygen, with this page acting as the start page. The current docs can be found <a href="https://marcmunro.github.io/pgbitmap/docs/html/index.html">here</a>.</p>
 <h1>Why not use the Postgres Bitstring Type? </h1>
@@ -136,14 +137,16 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p><code><a class="el" href="pgbitmap_8c.html#af1fb14a8c2c70a0927c140df5375874e">bitmap_union()</a></code>, the <code>+</code> operator, returns a bitmap containing all elements from both arguments. The following queries return identical results:</p>
 <div class="fragment"><div class="line">select bitmap_union(to_bitmap({&#39;1 2 3&#39;}),</div><div class="line">                    to_bitmap({&#39;1 3 5&#39;}));</div><div class="line"></div><div class="line">select to_bitmap({&#39;1 2 3 5}&#39;);</div></div><!-- fragment --><p><code>bitmap_intersect()</code>, the <code>*</code> operator, yields the set of common elements from its arguments. The following queries return identical results: </p><div class="fragment"><div class="line">select to_bitmap({&#39;1 2 3}&#39;) * to_bitmap(&#39;{3, 4, 5}&#39;);</div><div class="line"></div><div class="line">select bitmap(3);</div></div><!-- fragment --><p><code><a class="el" href="pgbitmap_8c.html#a5057baf2a406be73117e928e162b537f">bitmap_minus()</a></code>, the <code>-</code> operator, yields a bitmap containing all elements from the first argument that do not appear in the second. These queries return identical results: </p><div class="fragment"><div class="line">select to_bitmap({&#39;1 2 3}&#39;) - to_bitmap(&#39;{3, 4, 5}&#39;);</div><div class="line"></div><div class="line">select to_bitmap(&#39;{1, 2}&#39;);</div></div><!-- fragment --><h2>Extracting all Elements of a <a class="el" href="structBitmap.html">Bitmap</a> </h2>
 <div class="fragment"><div class="line">to_array(bitmap) -&gt; array of integer</div><div class="line"></div><div class="line">bits(bitmap) -&gt; set of integer</div></div><!-- fragment --><p>These functions return the elements of a bitmap, either as an array, or as a set. Use the set returning function like this: </p><div class="fragment"><div class="line">select bits as privilege_id</div><div class="line">  from bits(privileges);</div></div><!-- fragment --><p> The <code>to_array()</code> function can also be invoked as a cast, eg: </p><div class="fragment"><div class="line">select privileges::int4[];</div></div><!-- fragment --><h2><a class="el" href="structBitmap.html">Bitmap</a> Aggregates </h2>
-<div class="fragment"><div class="line">union_of(bitmap) -&gt; bitmap</div><div class="line"></div><div class="line">intersect_of(bitmap) -&gt; bitmap</div></div><!-- fragment --><p>These functions aggregate a collection of bitmaps using the union or intersect operations. Eg to identify all privileges of all members of a group of offices, we could use something like this: </p><div class="fragment"><div class="line">select union_of(privs) as office_privs, office_name</div><div class="line">  from user_privs</div><div class="line"> where office_name like &#39;%admin%&#39;</div><div class="line"> group by office_name;</div></div><!-- fragment --><h2>Building pgbitmap </h2>
-<p>Pgbitmap is built using the standard Postgres PGXS build mechanism as described here [<a href="https://www.postgresql.org/docs/12/extend-pgxs.html">https://www.postgresql.org/docs/12/extend-pgxs.html</a>].</p>
+<div class="fragment"><div class="line">union_of(bitmap) -&gt; bitmap</div><div class="line"></div><div class="line">intersect_of(bitmap) -&gt; bitmap</div></div><!-- fragment --><p>These functions aggregate a collection of bitmaps using the union or intersect operations. Eg to identify all privileges of all members of a group of offices, we could use something like this: </p><div class="fragment"><div class="line">select union_of(privs) as office_privs, office_name</div><div class="line">  from user_privs</div><div class="line"> where office_name like &#39;%admin%&#39;</div><div class="line"> group by office_name;</div></div><!-- fragment --><h2>Installing pgbitmap using pgxn </h2>
+<p>If you're using the pgxn client all you need to do is this: </p><div class="fragment"><div class="line">$ pgxn install pgbitmap</div><div class="line">$ pgxn load -d mydb pgbitmap</div></div><!-- fragment --><h2>Building pgbitmap Manually </h2>
+<p>Pgbitmap can be built using the standard Postgres PGXS build mechanism as described here [<a href="https://www.postgresql.org/docs/12/extend-pgxs.html">https://www.postgresql.org/docs/12/extend-pgxs.html</a>].</p>
 <p>The build will need to be able to find the pg_config executable that matches your Postgres version. It will attempt to find this using <code>find_pg_config</code> (in the top-level pgbitmap directory). If it cannot find pg_config the build will fail.</p>
 <p>You can manually define the location in the <code>PG_CONFIG</code> file: </p><div class="fragment"><div class="line">$ echo &lt;path to pg_config&gt; &gt;PG_CONFIG</div></div><!-- fragment --><p>From the pgbitmap directory (the root directory of the extension), use the following commands: </p><div class="fragment"><div class="line">$ make</div></div><!-- fragment --><p> To build the extension, followed by:</p>
 <div class="fragment"><div class="line">$ sudo make install</div></div><!-- fragment --><p> To install it. You may then need to stop and restart your database service to have postgres recognise the extension.</p>
 <p>To test the installation use:</p>
 <div class="fragment"><div class="line">$ make test</div></div><!-- fragment --><p>To create html documentation (in docs/html/index.html) use:</p>
-<div class="fragment"><div class="line">$ make docs</div></div><!-- fragment --> </div></div><!-- contents -->
+<div class="fragment"><div class="line">$ make docs</div></div><!-- fragment --><p>You will need to have doxygen and dot installed. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
