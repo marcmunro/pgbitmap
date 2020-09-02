@@ -3,7 +3,6 @@
   "abstract": "Bitmap-type extension for PostgreSQL",
   "description": "Provides a type for storing and manipulating bitmaps (space efficient arrays of bits).",
   "version": "0.9.0",
-  "release_status": "testing",
   "maintainer": ["Marc Munro <marc@bloodnok.com>"],
   "license": {
     "BSD": "http://www.opensource.org/licenses/bsd-license.html"
