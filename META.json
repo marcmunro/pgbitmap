@@ -16,7 +16,7 @@
   },
   "provides": {
     "pgbitmap": {
-      "file": "pgbitmap--0.9.sql",
+      "file": "pgbitmap--0.9.1.sql",
       "version": "0.9.1",
       "docfile": "README.md"
     }
