@@ -44,7 +44,8 @@ override CFLAGS := $(CFLAGS) -g -O0 $(DFORCE_32_BIT)
 
 include $(DEPS)
 
-.PHONY: deps tarball_clean make_deps clean pgbitmap_clean list help docs
+.PHONY: deps tarball_clean make_deps clean pgbitmap_clean list \
+	zipfile help docs
 
 # Build per-source dependency files for inclusion
 # This ignores header files and any other non-local files (such as
@@ -72,9 +73,13 @@ deps:
 	$(MAKE) MAKEFLAGS="$(MAKEFLAGS)" make_deps
 
 # Run doxygen to build html docs
-#
 docs:
 	doxygen docs/Doxyfile
+
+# Create tarball for distribution to pgxn
+zipfile: clean
+	git archive --format zip --prefix=pgbitmap-$(PGBITMAP_VERSION)/ \
+	    --output ./pgbitmap-$(PGBITMAP_VERSION).zip master
 
 # Target to remove generated and backup files.
 clean: pgbitmap_clean docs_clean
@@ -82,7 +87,7 @@ clean: pgbitmap_clean docs_clean
 pgbitmap_clean:
 	@rm -f PG_VERSION PG_CONFIG $(OBJS) \
 	    $(OLD_PGBITMAP_CONTROLS) $(MODULE_big).so \
-	    *~ src/*~ test/*~
+	    *~ src/*~ test/*~ pgbitmap*.zip
 
 docs_clean:
 	@rm -rf docs/html docs/*~ 
@@ -95,6 +100,7 @@ list help:
  clean        - remove target and object files\n\
  deps         - recreate the <nnn>.d dependency files\n\
  docs         - run doxygen to create html docs\n\
+ tarball      - create a tarball suitable for pgxn\n\
  test         - run unit tests on installed extension\n\
  install      - install the extension (may require root)\n\
  help         - show this list of major targets\n\
