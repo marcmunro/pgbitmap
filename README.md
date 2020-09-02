@@ -1,4 +1,4 @@
-[comment]: <> (\mainpage
+[]: # (\mainpage)
 
 pgbitmap - Bitmap Extension for Postgres  
 ========================================
