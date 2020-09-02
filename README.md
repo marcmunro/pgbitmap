@@ -44,6 +44,8 @@ Change History
 0.9 (beta) Minor updates to documentation and to allow distribution
 through pgxn.  Updated to Beta status as it all seems stable enough.  
 
+0.9.1 (beta) Updated to convince pgxn to fully index the extension.
+
 Doxygen Docs
 ============
 
