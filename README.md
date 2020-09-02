@@ -1,4 +1,6 @@
-pgbitmap - Bitmap Extension for Postgres      {#mainpage}
+[comment]: <> (\mainpage
+
+pgbitmap - Bitmap Extension for Postgres  
 ========================================
 
 This extension creates a space-optimised, non-sparse, bitmap type for
@@ -23,9 +25,8 @@ for:
 Status
 ======
 
-This is an alpha release.  The plan is to give it real-life usage and
-then re-release as Beta, before finally releasing a production version
-if all looks well.
+This is a beta release.  The plan is to give it real-life usage before
+releasing a production version if all looks well.
 
 There are no known bugs or deficiencies.  If you find any problems or
 want enhancements, contact me and I will do what I can to respond
@@ -41,6 +42,9 @@ Change History
 0.5 (alpha) Change name of extension to pgbitmap from bitmap.
 
 0.6 (alpha) Minor fixes to Makefiles find_pg_config and docs
+
+0.9 (beta) Minor updates to documentation and to allow distribution
+through pgxn.  Updated to Beta status as it all seems stable enough.  
 
 Doxygen Docs
 ============
@@ -387,10 +391,19 @@ group of offices, we could use something like this:
      group by office_name;
 ```
 
-Building pgbitmap
------------------
+Installing pgbitmap using pgxn
+------------------------------
 
-Pgbitmap is built using the standard Postgres PGXS build mechanism
+If you're using the pgxn client all you need to do is this: 
+```
+    $ pgxn install pgbitmap
+    $ pgxn load -d mydb pgbitmap
+```
+
+Building pgbitmap Manually
+--------------------------
+
+Pgbitmap can be built using the standard Postgres PGXS build mechanism
 as described here
 [https://www.postgresql.org/docs/12/extend-pgxs.html].
 
@@ -428,4 +441,6 @@ To create html documentation (in docs/html/index.html) use:
 ```
   $ make docs
 ```
+
+You will need to have doxygen and dot installed.
 
