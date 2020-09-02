@@ -1,5 +1,3 @@
-[]: # (\mainpage)
-
 pgbitmap - Bitmap Extension for Postgres  
 ========================================
 
