@@ -100,7 +100,7 @@ list help:
  clean        - remove target and object files\n\
  deps         - recreate the <nnn>.d dependency files\n\
  docs         - run doxygen to create html docs\n\
- tarball      - create a tarball suitable for pgxn\n\
+ zipfile      - create a zipfile suitable for pgxn\n\
  test         - run unit tests on installed extension\n\
  install      - install the extension (may require root)\n\
  help         - show this list of major targets\n\

@@ -776,6 +776,10 @@ bitmapUnion(Bitmap *bitmap1,
 		}
 		result->bitset[to] = elem;
 	}
+	// This would normally be unncessary but it is possible that
+	// either of the source bitmaps are empty, so we do this to be
+	// safe.
+	reduceBitmap(result);
 	return result;
 }
 

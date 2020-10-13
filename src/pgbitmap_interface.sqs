@@ -333,7 +333,7 @@ create
 function to_array(bitmap)
   returns int[] as
 $$
-select array_agg(bits) from bits($1);
+select coalesce(array_agg(bits), '{}'::int[]) from bits($1);
 $$
 language sql;
 
@@ -346,7 +346,7 @@ create
 function to_bitmap(int[])
   returns bitmap as
 $$
-select bitmap_of(unnest) from unnest($1)
+select coalesce(bitmap_of(unnest), bitmap()) from unnest($1)
 $$
 language sql;
 

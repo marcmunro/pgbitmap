@@ -46,6 +46,8 @@ through pgxn.  Updated to Beta status as it all seems stable enough.
 
 0.9.1 (beta) Updated to convince pgxn to fully index the extension.
 
+0.9.3 (beta) Fix for bitmap union bug on unions of empty bitmaps.
+
 Doxygen Docs
 ============
 
