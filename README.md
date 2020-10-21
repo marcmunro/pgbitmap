@@ -48,6 +48,8 @@ through pgxn.  Updated to Beta status as it all seems stable enough.
 
 0.9.2 (beta) Fix for bitmap union bug on unions of empty bitmaps.
 
+0.9.3 (beta) No-change update for release to PGXN
+
 Doxygen Docs
 ============
 
