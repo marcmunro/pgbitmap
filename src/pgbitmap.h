@@ -202,6 +202,8 @@ typedef unsigned char boolean;
  */
 #define PG_RETURN_BITMAP(x)	PG_RETURN_POINTER(x)
 
+extern bool bitmapTestbit(Bitmap *bitmap, int32 bit);
+extern Bitmap *bitmapCopy(Bitmap *bitmap);
 
 extern Datum bitmap_in(PG_FUNCTION_ARGS);
 extern Datum bitmap_out(PG_FUNCTION_ARGS);

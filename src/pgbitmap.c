@@ -286,7 +286,7 @@ newBitmap(int32 min, int32 max)
  * 
  * @return True if the bit is set, false otherwise.
  */
-static bool
+bool
 bitmapTestbit(Bitmap *bitmap,
 			   int32 bit)
 {
@@ -344,8 +344,8 @@ bitmapString(Bitmap *bitmap)
  *
  * @return Copy of bitmap.
  */
-static Bitmap *
-copyBitmap(Bitmap *bitmap)
+Bitmap *
+bitmapCopy(Bitmap *bitmap)
 {
 	Bitmap *result;
 	int32 i;
@@ -462,7 +462,7 @@ bitmapSetbit(Bitmap *bitmap,
 		result = extendBitmap(bitmap, bit);
 	}
 	else {
-		result = copyBitmap(bitmap);
+		result = bitmapCopy(bitmap);
 	}
 	doSetBit(result, bit);
 	return result;
@@ -844,7 +844,7 @@ static Bitmap *
 bitmapMinus(Bitmap *bitmap1,
 			Bitmap *bitmap2)
 {
-	Bitmap *result = copyBitmap(bitmap1);
+	Bitmap *result = bitmapCopy(bitmap1);
 	bool found = !bitmapEmpty(bitmap2);
 	int32 bit = MAX(bitmap1->bitmin, bitmap2->bitmin);
 	
@@ -1321,7 +1321,7 @@ bitmap_setbit(PG_FUNCTION_ARGS)
 		bitno = PG_GETARG_INT32(1);
 		bitmap = PG_GETARG_BITMAP(0);
 		if (PG_ARGISNULL(1)) {
-			result = copyBitmap(bitmap);
+			result = bitmapCopy(bitmap);
 		}
 		else {
 			result = bitmapSetbit(bitmap, bitno);
@@ -1382,7 +1382,7 @@ bitmap_setmin(PG_FUNCTION_ARGS)
 	}
     bitmap = PG_GETARG_BITMAP(0);
     bitmin = PG_GETARG_INT32(1);
-	result = copyBitmap(bitmap);
+	result = bitmapCopy(bitmap);
 	result = bitmapSetMin(result, bitmin);
 
 	PG_RETURN_BITMAP(result);
@@ -1411,7 +1411,7 @@ bitmap_setmax(PG_FUNCTION_ARGS)
 	}
     bitmap = PG_GETARG_BITMAP(0);
     bitmax = PG_GETARG_INT32(1);
-	result = copyBitmap(bitmap);
+	result = bitmapCopy(bitmap);
 	result = bitmapSetMax(result, bitmax);
 
 	PG_RETURN_BITMAP(result);
@@ -1644,13 +1644,13 @@ bitmap_union(PG_FUNCTION_ARGS)
 		}
 		else {
 			bitmap2 = PG_GETARG_BITMAP(1);
-			result = copyBitmap(bitmap2);
+			result = bitmapCopy(bitmap2);
 		}
 	}
 	else {
 		bitmap1 = PG_GETARG_BITMAP(0);
 		if (PG_ARGISNULL(1)) {
-			result = copyBitmap(bitmap1);
+			result = bitmapCopy(bitmap1);
 		}
 		else {
 			bitmap2 = PG_GETARG_BITMAP(1);
@@ -1683,7 +1683,7 @@ bitmap_clearbit(PG_FUNCTION_ARGS)
 	}
     bitmap = PG_GETARG_BITMAP(0);
     bitno = PG_GETARG_INT32(1);
-	result = copyBitmap(bitmap);
+	result = bitmapCopy(bitmap);
 	result = bitmapClearbit(result, bitno);
 
 	PG_RETURN_BITMAP(result);
@@ -1715,12 +1715,12 @@ bitmap_intersection(PG_FUNCTION_ARGS)
 			PG_RETURN_NULL();
 		}
 		bitmap2 = PG_GETARG_BITMAP(1);
-		result = copyBitmap(bitmap2);
+		result = bitmapCopy(bitmap2);
 	}
 	else {
 		bitmap1 = PG_GETARG_BITMAP(0);
 		if (PG_ARGISNULL(1)) {
-			result = copyBitmap(bitmap1);
+			result = bitmapCopy(bitmap1);
 		}
 		bitmap2 = PG_GETARG_BITMAP(1);
 		result = bitmapIntersect(bitmap1, bitmap2);
