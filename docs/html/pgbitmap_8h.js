@@ -42,5 +42,7 @@ var pgbitmap_8h =
     [ "bitmap_setmax", "pgbitmap_8h.html#a6611940332cd7d8e76c25ed6e000f2cd", null ],
     [ "bitmap_setmin", "pgbitmap_8h.html#a1eed88fa88b6d53eef0942def83bdfd7", null ],
     [ "bitmap_testbit", "pgbitmap_8h.html#a08c2640acb10ec32411ae40132419dfb", null ],
-    [ "bitmap_union", "pgbitmap_8h.html#af1fb14a8c2c70a0927c140df5375874e", null ]
+    [ "bitmap_union", "pgbitmap_8h.html#af1fb14a8c2c70a0927c140df5375874e", null ],
+    [ "bitmapCopy", "pgbitmap_8h.html#ad2ff6ae03bd25ef0dd9321d533134530", null ],
+    [ "bitmapTestbit", "pgbitmap_8h.html#afe2f4d39fa7b8f245afe3350c9d5303a", null ]
 ];

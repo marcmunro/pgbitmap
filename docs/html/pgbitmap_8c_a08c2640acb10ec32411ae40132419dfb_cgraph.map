@@ -1,7 +1,7 @@
 <map id="bitmap_testbit" name="bitmap_testbit">
-<area shape="rect" id="node2" href="$pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3513,144,3618,171"/>
+<area shape="rect" id="node2" href="$pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3513,144,3618,171"/>
 <area shape="rect" id="node3" href="$pgbitmap_8c.html#a1eed88fa88b6d53eef0942def83bdfd7" title="bitmap_setmin" alt="" coords="161,1259,273,1285"/>
-<area shape="rect" id="node4" href="$pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3337,1031,3431,1057"/>
+<area shape="rect" id="node4" href="$pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3336,1031,3432,1057"/>
 <area shape="rect" id="node6" href="$pgbitmap_8c.html#a04ac8ee243123613223cb43684075d7c" title="bitmapSetMin" alt="" coords="642,1335,749,1361"/>
 <area shape="rect" id="node7" href="$pgbitmap_8c.html#a6611940332cd7d8e76c25ed6e000f2cd" title="bitmap_setmax" alt="" coords="321,1208,437,1235"/>
 <area shape="rect" id="node5" href="$pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3520,727,3611,753"/>

@@ -114,10 +114,10 @@ static unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>b64_decode
 <tr class="separator:a2b6a03169577b99c1bfe2887508df7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf7d3726159048e2efc91943580d9667"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structBitmap.html">Bitmap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667">newBitmap</a> (int32 min, int32 max)</td></tr>
 <tr class="separator:abf7d3726159048e2efc91943580d9667"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94c80a2c0cc0267587fdbf6d43579400"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400">bitmapTestbit</a> (<a class="el" href="structBitmap.html">Bitmap</a> *bitmap, int32 bit)</td></tr>
-<tr class="separator:a94c80a2c0cc0267587fdbf6d43579400"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad15cdc6da1cc4c32ca71159527c027f2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structBitmap.html">Bitmap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2">copyBitmap</a> (<a class="el" href="structBitmap.html">Bitmap</a> *bitmap)</td></tr>
-<tr class="separator:ad15cdc6da1cc4c32ca71159527c027f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe2f4d39fa7b8f245afe3350c9d5303a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a">bitmapTestbit</a> (<a class="el" href="structBitmap.html">Bitmap</a> *bitmap, int32 bit)</td></tr>
+<tr class="separator:afe2f4d39fa7b8f245afe3350c9d5303a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2ff6ae03bd25ef0dd9321d533134530"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structBitmap.html">Bitmap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530">bitmapCopy</a> (<a class="el" href="structBitmap.html">Bitmap</a> *bitmap)</td></tr>
+<tr class="separator:ad2ff6ae03bd25ef0dd9321d533134530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5032b3562225053cba38c3226c7c1dc2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structBitmap.html">Bitmap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2">extendBitmap</a> (<a class="el" href="structBitmap.html">Bitmap</a> *bitmap, int32 bit)</td></tr>
 <tr class="separator:a5032b3562225053cba38c3226c7c1dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a7070cea994de55a199e0ae50210dde"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde">doSetBit</a> (<a class="el" href="structBitmap.html">Bitmap</a> *bitmap, int32 bit)</td></tr>
@@ -282,7 +282,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node2" href="pgbitmap_8c.html#aa1ac399dbbff4c50683c66de24028f92" title="bitmap_bits" alt="" coords="164,220,256,247"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="3305,803,3413,829"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#af15551d22dbeb2c30b953604e986ed5b" title="bitmap_new_empty" alt="" coords="304,220,447,247"/>
-<area shape="rect" id="node4" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3661,360,3766,387"/>
+<area shape="rect" id="node4" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3661,360,3766,387"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="3471,904,3593,931"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="3671,980,3755,1007"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="3657,879,3770,905"/>
@@ -292,7 +292,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="495,220,592,247"/>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="967,195,1041,221"/>
 <area shape="rect" id="node14" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="640,296,744,323"/>
-<area shape="rect" id="node15" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3156,549,3251,576"/>
+<area shape="rect" id="node15" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3155,549,3251,576"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="797,347,895,373"/>
 <area shape="rect" id="node18" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="792,448,900,475"/>
 <area shape="rect" id="node17" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="1428,397,1536,424"/>
@@ -365,7 +365,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#aa1ac399dbbff4c50683c66de24028f92" title="bitmap_bits" alt="" coords="319,222,411,249"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="3460,855,3568,882"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#af15551d22dbeb2c30b953604e986ed5b" title="bitmap_new_empty" alt="" coords="459,222,601,249"/>
-<area shape="rect" id="node5" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3815,1159,3921,1186"/>
+<area shape="rect" id="node5" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3815,1159,3921,1186"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="3625,1286,3748,1313"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="3826,1235,3910,1262"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="3811,1286,3925,1313"/>
@@ -375,7 +375,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="649,222,747,249"/>
 <area shape="rect" id="node14" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="1121,146,1196,173"/>
 <area shape="rect" id="node15" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="795,298,899,325"/>
-<area shape="rect" id="node16" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3311,551,3405,578"/>
+<area shape="rect" id="node16" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3310,551,3406,578"/>
 <area shape="rect" id="node17" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="951,298,1050,325"/>
 <area shape="rect" id="node19" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="947,729,1055,755"/>
 <area shape="rect" id="node18" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="1583,298,1691,325"/>
@@ -444,7 +444,7 @@ Here is the call graph for this function:</div>
 <map name="pgbitmap_8c_aa1ac399dbbff4c50683c66de24028f92_cgraph" id="pgbitmap_8c_aa1ac399dbbff4c50683c66de24028f92_cgraph">
 <area shape="rect" id="node2" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="3149,1360,3257,1387"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#af15551d22dbeb2c30b953604e986ed5b" title="bitmap_new_empty" alt="" coords="145,93,288,120"/>
-<area shape="rect" id="node3" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3505,1473,3610,1500"/>
+<area shape="rect" id="node3" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3505,1473,3610,1500"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="3315,1005,3437,1032"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="3515,929,3599,956"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="3501,1031,3614,1057"/>
@@ -454,7 +454,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="336,144,433,171"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="808,1308,883,1335"/>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="481,499,585,525"/>
-<area shape="rect" id="node14" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2999,752,3093,779"/>
+<area shape="rect" id="node14" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2998,752,3094,779"/>
 <area shape="rect" id="node15" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="638,575,737,601"/>
 <area shape="rect" id="node17" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="633,701,741,728"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="1269,549,1377,576"/>
@@ -525,14 +525,14 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_a459d7f7ed8bdd2470313fdccb6e3c45f_cgraph.png" border="0" usemap="#pgbitmap_8c_a459d7f7ed8bdd2470313fdccb6e3c45f_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a459d7f7ed8bdd2470313fdccb6e3c45f_cgraph" id="pgbitmap_8c_a459d7f7ed8bdd2470313fdccb6e3c45f_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="689,5,784,32"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="689,5,785,32"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a6784edb3ed93c2ef25c9006f077f8a04" title="bitmapClearbit" alt="" coords="520,157,631,184"/>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#a3083ed0866ef513f208ee8b0b204bcfa" title="bitmap_intersection" alt="" coords="169,107,313,133"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="847,221,938,248"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#aacce43ba4627ec4927cc6d83e88166c1" title="doClearBit" alt="" coords="693,157,781,184"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="683,208,791,235"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="839,95,947,121"/>
-<area shape="rect" id="node8" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="1175,69,1281,96"/>
+<area shape="rect" id="node8" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="1175,69,1281,96"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="995,120,1117,147"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="1186,171,1270,197"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="1171,221,1285,248"/>
@@ -585,7 +585,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="2699,401,2783,428"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="2685,807,2798,833"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="2679,756,2804,783"/>
-<area shape="rect" id="node9" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="2689,705,2794,732"/>
+<area shape="rect" id="node9" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="2689,705,2794,732"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="2125,148,2264,175"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="944,136,1035,163"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3022,408,3113,435"/>
@@ -601,7 +601,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node23" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="1969,351,2067,377"/>
 <area shape="rect" id="node24" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="2523,705,2597,732"/>
 <area shape="rect" id="node25" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="2143,452,2247,479"/>
-<area shape="rect" id="node26" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2860,655,2955,681"/>
+<area shape="rect" id="node26" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2859,655,2955,681"/>
 <area shape="rect" id="node27" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="2327,553,2426,580"/>
 <area shape="rect" id="node29" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="2323,503,2431,529"/>
 <area shape="rect" id="node28" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="2853,376,2961,403"/>
@@ -670,7 +670,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="3030,600,3114,627"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="3015,448,3129,475"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="3009,499,3135,525"/>
-<area shape="rect" id="node11" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3019,549,3125,576"/>
+<area shape="rect" id="node11" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3019,549,3125,576"/>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="2456,1107,2595,1133"/>
 <area shape="rect" id="node18" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="1275,588,1365,615"/>
 <area shape="rect" id="node14" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3341,879,3432,905"/>
@@ -686,7 +686,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node25" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="2300,904,2397,931"/>
 <area shape="rect" id="node26" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="2853,549,2928,576"/>
 <area shape="rect" id="node27" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="2473,803,2577,829"/>
-<area shape="rect" id="node28" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3191,651,3285,677"/>
+<area shape="rect" id="node28" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3190,651,3286,677"/>
 <area shape="rect" id="node29" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="2658,701,2757,728"/>
 <area shape="rect" id="node31" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="2653,752,2761,779"/>
 <area shape="rect" id="node30" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="3184,777,3292,804"/>
@@ -751,7 +751,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="2166,897,2250,924"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="2151,999,2265,1025"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="2145,948,2271,975"/>
-<area shape="rect" id="node9" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="2155,752,2261,779"/>
+<area shape="rect" id="node9" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="2155,752,2261,779"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="1592,752,1731,779"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="411,676,501,703"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="2489,524,2579,551"/>
@@ -767,7 +767,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node23" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="1436,600,1533,627"/>
 <area shape="rect" id="node24" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="1989,745,2064,772"/>
 <area shape="rect" id="node25" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="1609,549,1713,576"/>
-<area shape="rect" id="node26" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2327,853,2421,880"/>
+<area shape="rect" id="node26" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2326,853,2422,880"/>
 <area shape="rect" id="node27" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="1794,549,1893,576"/>
 <area shape="rect" id="node29" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="1789,499,1897,525"/>
 <area shape="rect" id="node28" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="2320,448,2428,475"/>
@@ -834,7 +834,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="2297,651,2381,677"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="2282,904,2395,931"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="2276,955,2401,981"/>
-<area shape="rect" id="node9" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="2286,853,2391,880"/>
+<area shape="rect" id="node9" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="2286,853,2391,880"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="1723,296,1861,323"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="541,309,632,336"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="2619,524,2710,551"/>
@@ -850,7 +850,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node23" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="1567,499,1664,525"/>
 <area shape="rect" id="node24" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="2120,853,2195,880"/>
 <area shape="rect" id="node25" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="1740,600,1844,627"/>
-<area shape="rect" id="node26" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2457,803,2552,829"/>
+<area shape="rect" id="node26" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2457,803,2553,829"/>
 <area shape="rect" id="node27" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="1925,651,2023,677"/>
 <area shape="rect" id="node29" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="1920,600,2028,627"/>
 <area shape="rect" id="node28" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="2451,651,2559,677"/>
@@ -918,7 +918,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#a85fbc354d13d28108a6bbf4fa70b4430" title="bitmap_is_empty" alt="" coords="275,1236,401,1262"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="4323,932,4437,958"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="4317,982,4443,1009"/>
-<area shape="rect" id="node12" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="4327,1198,4433,1225"/>
+<area shape="rect" id="node12" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="4327,1198,4433,1225"/>
 <area shape="rect" id="node14" href="pgbitmap_8c.html#a506a4e39a8638fd03a3a96dbbe4ddc43" title="bitmapEmpty" alt="" coords="3837,1160,3940,1186"/>
 <area shape="rect" id="node15" href="pgbitmap_8c.html#a5fa3474087a4208a333887ea161f4cd8" title="bitmap_bitmin" alt="" coords="449,1236,556,1262"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#af403584d637574d9252b1f70dddfe59e" title="bitmap_bitmax" alt="" coords="604,1236,715,1262"/>
@@ -928,7 +928,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node20" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="1093,349,1191,376"/>
 <area shape="rect" id="node21" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="1621,805,1696,832"/>
 <area shape="rect" id="node22" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="1256,400,1360,426"/>
-<area shape="rect" id="node23" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3841,653,3936,680"/>
+<area shape="rect" id="node23" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3841,653,3937,680"/>
 <area shape="rect" id="node24" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="1441,681,1539,708"/>
 <area shape="rect" id="node26" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="1436,501,1544,528"/>
 <area shape="rect" id="node25" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="2269,729,2377,756"/>
@@ -990,13 +990,13 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_a3083ed0866ef513f208ee8b0b204bcfa_cgraph.png" border="0" usemap="#pgbitmap_8c_a3083ed0866ef513f208ee8b0b204bcfa_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a3083ed0866ef513f208ee8b0b204bcfa_cgraph" id="pgbitmap_8c_a3083ed0866ef513f208ee8b0b204bcfa_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="525,5,620,32"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="525,5,621,32"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a098b1f61deffa1153b3e0ab078020819" title="bitmapIntersect" alt="" coords="352,95,471,121"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#a5057baf2a406be73117e928e162b537f" title="bitmap_minus" alt="" coords="197,145,304,172"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="683,44,774,71"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="519,107,627,133"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="675,120,783,147"/>
-<area shape="rect" id="node7" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="1011,95,1117,121"/>
+<area shape="rect" id="node7" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="1011,95,1117,121"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="831,145,953,172"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="1022,145,1106,172"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="1007,196,1121,223"/>
@@ -1044,7 +1044,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#aa1ac399dbbff4c50683c66de24028f92" title="bitmap_bits" alt="" coords="493,107,585,133"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="3607,411,3715,437"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#af15551d22dbeb2c30b953604e986ed5b" title="bitmap_new_empty" alt="" coords="633,411,776,437"/>
-<area shape="rect" id="node7" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3962,512,4067,539"/>
+<area shape="rect" id="node7" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3962,512,4067,539"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="3772,208,3895,235"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="3973,259,4057,285"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="3958,208,4071,235"/>
@@ -1054,7 +1054,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node15" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="824,664,921,691"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="1296,1373,1371,1400"/>
 <area shape="rect" id="node17" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="969,1171,1073,1197"/>
-<area shape="rect" id="node18" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3457,968,3552,995"/>
+<area shape="rect" id="node18" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3457,968,3553,995"/>
 <area shape="rect" id="node19" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="1126,1221,1225,1248"/>
 <area shape="rect" id="node21" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="1121,1069,1229,1096"/>
 <area shape="rect" id="node20" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="1441,1272,1549,1299"/>
@@ -1130,7 +1130,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="2427,784,2511,811"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="2413,936,2526,963"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="2407,885,2532,912"/>
-<area shape="rect" id="node9" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="2417,835,2522,861"/>
+<area shape="rect" id="node9" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="2417,835,2522,861"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="1853,271,1992,297"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="672,784,763,811"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="2750,505,2841,532"/>
@@ -1146,7 +1146,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node23" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="1697,499,1795,525"/>
 <area shape="rect" id="node24" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="2251,835,2325,861"/>
 <area shape="rect" id="node25" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="1871,575,1975,601"/>
-<area shape="rect" id="node26" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2588,733,2683,760"/>
+<area shape="rect" id="node26" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2587,733,2683,760"/>
 <area shape="rect" id="node27" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="2055,676,2154,703"/>
 <area shape="rect" id="node29" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="2051,625,2159,652"/>
 <area shape="rect" id="node28" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="2581,581,2689,608"/>
@@ -1213,7 +1213,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="2554,499,2638,525"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="2539,600,2653,627"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="2533,549,2659,576"/>
-<area shape="rect" id="node9" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="2543,701,2649,728"/>
+<area shape="rect" id="node9" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="2543,701,2649,728"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="1980,600,2119,627"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="799,625,889,652"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="2877,849,2967,876"/>
@@ -1229,7 +1229,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node23" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="1824,853,1921,880"/>
 <area shape="rect" id="node24" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="2377,701,2452,728"/>
 <area shape="rect" id="node25" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="1997,904,2101,931"/>
-<area shape="rect" id="node26" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2715,651,2809,677"/>
+<area shape="rect" id="node26" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2714,651,2810,677"/>
 <area shape="rect" id="node27" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="2182,904,2281,931"/>
 <area shape="rect" id="node29" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="2177,955,2285,981"/>
 <area shape="rect" id="node28" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="2708,809,2816,836"/>
@@ -1288,13 +1288,13 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="pgbitmap_8c_a5057baf2a406be73117e928e162b537f_cgraph.png" border="0" usemap="#pgbitmap_8c_a5057baf2a406be73117e928e162b537f_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a5057baf2a406be73117e928e162b537f_cgraph" id="pgbitmap_8c_a5057baf2a406be73117e928e162b537f_cgraph">
 <area shape="rect" id="node2" href="pgbitmap_8c.html#a94a046ec3f37a7c30d3c724cd99a086b" title="bitmapMinus" alt="" coords="160,107,260,133"/>
-<area shape="rect" id="node3" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="315,5,409,32"/>
+<area shape="rect" id="node3" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="314,5,410,32"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#a506a4e39a8638fd03a3a96dbbe4ddc43" title="bitmapEmpty" alt="" coords="311,56,413,83"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#aacce43ba4627ec4927cc6d83e88166c1" title="doClearBit" alt="" coords="318,107,406,133"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="464,183,572,209"/>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="308,208,416,235"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="473,5,563,32"/>
-<area shape="rect" id="node8" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="801,157,906,184"/>
+<area shape="rect" id="node8" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="801,157,906,184"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="620,208,743,235"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="811,208,895,235"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="797,259,910,285"/>
@@ -1344,7 +1344,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="2861,701,2945,728"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="2846,549,2959,576"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="2840,499,2965,525"/>
-<area shape="rect" id="node10" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="2850,600,2955,627"/>
+<area shape="rect" id="node10" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="2850,600,2955,627"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="2287,1157,2425,1184"/>
 <area shape="rect" id="node17" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="1105,1076,1196,1103"/>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3176,929,3267,956"/>
@@ -1360,7 +1360,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node24" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="2131,777,2228,804"/>
 <area shape="rect" id="node25" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="2684,600,2759,627"/>
 <area shape="rect" id="node26" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="2304,803,2408,829"/>
-<area shape="rect" id="node27" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3021,651,3116,677"/>
+<area shape="rect" id="node27" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3021,651,3117,677"/>
 <area shape="rect" id="node28" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="2489,853,2587,880"/>
 <area shape="rect" id="node30" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="2484,904,2592,931"/>
 <area shape="rect" id="node29" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="3015,828,3123,855"/>
@@ -1420,8 +1420,8 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#a2b6a03169577b99c1bfe2887508df7fd" title="clearBitmap" alt="" coords="3141,1157,3237,1184"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="477,524,552,551"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="151,436,255,463"/>
-<area shape="rect" id="node5" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3318,848,3423,875"/>
-<area shape="rect" id="node7" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2637,448,2732,475"/>
+<area shape="rect" id="node5" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3318,848,3423,875"/>
+<area shape="rect" id="node7" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2637,448,2733,475"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="307,436,406,463"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="303,93,411,120"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="623,93,731,120"/>
@@ -1502,8 +1502,8 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="196,1309,293,1336"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="668,1284,743,1311"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="341,1005,445,1032"/>
-<area shape="rect" id="node6" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3493,1297,3598,1324"/>
-<area shape="rect" id="node8" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2832,651,2927,677"/>
+<area shape="rect" id="node6" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3493,1297,3598,1324"/>
+<area shape="rect" id="node8" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2831,651,2927,677"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="498,397,597,424"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="493,1005,601,1032"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="1131,245,1239,272"/>
@@ -1584,7 +1584,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="4139,778,4223,804"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="4125,524,4238,551"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="4119,474,4244,500"/>
-<area shape="rect" id="node6" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="4129,94,4234,120"/>
+<area shape="rect" id="node6" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="4129,94,4234,120"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#a506a4e39a8638fd03a3a96dbbe4ddc43" title="bitmapEmpty" alt="" coords="3620,144,3723,171"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#a5fa3474087a4208a333887ea161f4cd8" title="bitmap_bitmin" alt="" coords="319,575,425,602"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#af403584d637574d9252b1f70dddfe59e" title="bitmap_bitmax" alt="" coords="473,575,584,602"/>
@@ -1596,7 +1596,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="963,1158,1060,1184"/>
 <area shape="rect" id="node17" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="1435,144,1509,171"/>
 <area shape="rect" id="node18" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="1108,904,1212,931"/>
-<area shape="rect" id="node19" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3624,651,3719,678"/>
+<area shape="rect" id="node19" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3623,651,3719,678"/>
 <area shape="rect" id="node20" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="1265,904,1363,931"/>
 <area shape="rect" id="node22" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="1260,702,1368,728"/>
 <area shape="rect" id="node21" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="1896,955,2004,982"/>
@@ -1665,10 +1665,10 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node2" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3196,476,3287,503"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#a2b6a03169577b99c1bfe2887508df7fd" title="clearBitmap" alt="" coords="3193,995,3289,1022"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="3204,1071,3279,1098"/>
-<area shape="rect" id="node6" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="2492,362,2587,388"/>
+<area shape="rect" id="node6" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="2491,362,2587,388"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="2327,514,2426,540"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="157,159,265,186"/>
-<area shape="rect" id="node5" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3352,644,3457,671"/>
+<area shape="rect" id="node5" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3352,644,3457,671"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="2643,412,2751,439"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#a1eed88fa88b6d53eef0942def83bdfd7" title="bitmap_setmin" alt="" coords="313,159,425,186"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#a04ac8ee243123613223cb43684075d7c" title="bitmapSetMin" alt="" coords="794,108,901,135"/>
@@ -1745,7 +1745,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_a6611940332cd7d8e76c25ed6e000f2cd_cgraph.png" border="0" usemap="#pgbitmap_8c_a6611940332cd7d8e76c25ed6e000f2cd_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a6611940332cd7d8e76c25ed6e000f2cd_cgraph" id="pgbitmap_8c_a6611940332cd7d8e76c25ed6e000f2cd_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3189,448,3283,475"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3188,448,3284,475"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#ab6490c2d214e62753452520ae4ba6830" title="bitmapSetMax" alt="" coords="324,81,435,108"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#abc0a6ac9d53ecd59091e350c290ff378" title="bitmap_equal" alt="" coords="169,524,275,551"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3347,625,3437,652"/>
@@ -1760,7 +1760,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="3194,1157,3278,1184"/>
 <area shape="rect" id="node13" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="3179,1056,3293,1083"/>
 <area shape="rect" id="node14" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="3173,1107,3299,1133"/>
-<area shape="rect" id="node15" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3183,752,3289,779"/>
+<area shape="rect" id="node15" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3183,752,3289,779"/>
 <area shape="rect" id="node17" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="2620,1107,2759,1133"/>
 <area shape="rect" id="node21" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="1439,955,1529,981"/>
 <area shape="rect" id="node18" href="pgbitmap_8c.html#a2b6a03169577b99c1bfe2887508df7fd" title="clearBitmap" alt="" coords="2823,955,2919,981"/>
@@ -1828,7 +1828,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_a1eed88fa88b6d53eef0942def83bdfd7_cgraph.png" border="0" usemap="#pgbitmap_8c_a1eed88fa88b6d53eef0942def83bdfd7_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a1eed88fa88b6d53eef0942def83bdfd7_cgraph" id="pgbitmap_8c_a1eed88fa88b6d53eef0942def83bdfd7_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3181,347,3275,373"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3180,347,3276,373"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a04ac8ee243123613223cb43684075d7c" title="bitmapSetMin" alt="" coords="486,17,593,44"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#a6611940332cd7d8e76c25ed6e000f2cd" title="bitmap_setmax" alt="" coords="165,169,281,196"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3364,613,3455,640"/>
@@ -1845,7 +1845,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node14" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="3367,1259,3451,1285"/>
 <area shape="rect" id="node15" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="3353,1031,3466,1057"/>
 <area shape="rect" id="node16" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="3347,1081,3472,1108"/>
-<area shape="rect" id="node17" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3357,1132,3462,1159"/>
+<area shape="rect" id="node17" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3357,1132,3462,1159"/>
 <area shape="rect" id="node19" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="2793,1259,2932,1285"/>
 <area shape="rect" id="node23" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="1612,828,1703,855"/>
 <area shape="rect" id="node20" href="pgbitmap_8c.html#a2b6a03169577b99c1bfe2887508df7fd" title="clearBitmap" alt="" coords="2997,904,3093,931"/>
@@ -1911,9 +1911,9 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_a08c2640acb10ec32411ae40132419dfb_cgraph.png" border="0" usemap="#pgbitmap_8c_a08c2640acb10ec32411ae40132419dfb_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a08c2640acb10ec32411ae40132419dfb_cgraph" id="pgbitmap_8c_a08c2640acb10ec32411ae40132419dfb_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3513,144,3618,171"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3513,144,3618,171"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#a1eed88fa88b6d53eef0942def83bdfd7" title="bitmap_setmin" alt="" coords="161,1259,273,1285"/>
-<area shape="rect" id="node4" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3337,1031,3431,1057"/>
+<area shape="rect" id="node4" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3336,1031,3432,1057"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#a04ac8ee243123613223cb43684075d7c" title="bitmapSetMin" alt="" coords="642,1335,749,1361"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#a6611940332cd7d8e76c25ed6e000f2cd" title="bitmap_setmax" alt="" coords="321,1208,437,1235"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3520,727,3611,753"/>
@@ -1994,13 +1994,13 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_af1fb14a8c2c70a0927c140df5375874e_cgraph.png" border="0" usemap="#pgbitmap_8c_af1fb14a8c2c70a0927c140df5375874e_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_af1fb14a8c2c70a0927c140df5375874e_cgraph" id="pgbitmap_8c_af1fb14a8c2c70a0927c140df5375874e_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="843,267,937,294"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="842,267,938,294"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a491992d869fd06a30474f135b5acf865" title="bitmapUnion" alt="" coords="679,14,779,41"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#a459d7f7ed8bdd2470313fdccb6e3c45f" title="bitmap_clearbit" alt="" coords="159,166,275,193"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="1001,14,1091,41"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="836,65,944,91"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="992,115,1100,142"/>
-<area shape="rect" id="node7" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="1329,90,1434,117"/>
+<area shape="rect" id="node7" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="1329,90,1434,117"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="1148,141,1271,167"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="1339,141,1423,167"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="1325,191,1438,218"/>
@@ -2067,7 +2067,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node2" href="pgbitmap_8c.html#aacce43ba4627ec4927cc6d83e88166c1" title="doClearBit" alt="" coords="174,5,262,32"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="164,56,272,83"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="320,56,428,83"/>
-<area shape="rect" id="node5" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="657,31,762,57"/>
+<area shape="rect" id="node5" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="657,31,762,57"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="476,81,599,108"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="667,81,751,108"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="653,132,766,159"/>
@@ -2131,7 +2131,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="4471,783,4555,809"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="4457,17,4570,44"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="4451,68,4576,95"/>
-<area shape="rect" id="node8" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="4461,119,4566,145"/>
+<area shape="rect" id="node8" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="4461,119,4566,145"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="1379,1309,1517,1336"/>
 <area shape="rect" id="node15" href="pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="276,321,367,348"/>
 <area shape="rect" id="node11" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="4133,929,4223,956"/>
@@ -2147,7 +2147,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node22" href="pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="1233,1056,1331,1083"/>
 <area shape="rect" id="node23" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="1761,499,1836,525"/>
 <area shape="rect" id="node24" href="pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="1396,1005,1500,1032"/>
-<area shape="rect" id="node25" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3975,549,4069,576"/>
+<area shape="rect" id="node25" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3974,549,4070,576"/>
 <area shape="rect" id="node26" href="pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="1581,651,1679,677"/>
 <area shape="rect" id="node28" href="pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="1576,1005,1684,1032"/>
 <area shape="rect" id="node27" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="2557,651,2665,677"/>
@@ -2172,6 +2172,40 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node47" href="pgbitmap_8c.html#a098b1f61deffa1153b3e0ab078020819" title="bitmapIntersect" alt="" coords="3801,245,3920,272"/>
 <area shape="rect" id="node48" href="pgbitmap_8c.html#a5057baf2a406be73117e928e162b537f" title="bitmap_minus" alt="" coords="3647,347,3753,373"/>
 <area shape="rect" id="node49" href="pgbitmap_8c.html#a94a046ec3f37a7c30d3c724cd99a086b" title="bitmapMinus" alt="" coords="3811,347,3911,373"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad2ff6ae03bd25ef0dd9321d533134530"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2ff6ae03bd25ef0dd9321d533134530">&#9670;&nbsp;</a></span>bitmapCopy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structBitmap.html">Bitmap</a>* bitmapCopy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structBitmap.html">Bitmap</a> *&#160;</td>
+          <td class="paramname"><em>bitmap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Create a copy of a bitmap.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bitmap</td><td>The original bitmap</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Copy of bitmap. </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="pgbitmap_8c_ad2ff6ae03bd25ef0dd9321d533134530_cgraph.png" border="0" usemap="#pgbitmap_8c_ad2ff6ae03bd25ef0dd9321d533134530_cgraph" alt=""/></div>
+<map name="pgbitmap_8c_ad2ff6ae03bd25ef0dd9321d533134530_cgraph" id="pgbitmap_8c_ad2ff6ae03bd25ef0dd9321d533134530_cgraph">
+<area shape="rect" id="node2" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="149,5,240,32"/>
 </map>
 </div>
 
@@ -2314,7 +2348,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node2" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="181,5,271,32"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="172,56,280,83"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="328,56,436,83"/>
-<area shape="rect" id="node5" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="665,31,770,57"/>
+<area shape="rect" id="node5" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="665,31,770,57"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="484,81,607,108"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="675,81,759,108"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="661,132,774,159"/>
@@ -2371,13 +2405,13 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_a94a046ec3f37a7c30d3c724cd99a086b_cgraph.png" border="0" usemap="#pgbitmap_8c_a94a046ec3f37a7c30d3c724cd99a086b_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a94a046ec3f37a7c30d3c724cd99a086b_cgraph" id="pgbitmap_8c_a94a046ec3f37a7c30d3c724cd99a086b_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="160,5,255,32"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="159,5,255,32"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a506a4e39a8638fd03a3a96dbbe4ddc43" title="bitmapEmpty" alt="" coords="156,56,259,83"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#aacce43ba4627ec4927cc6d83e88166c1" title="doClearBit" alt="" coords="163,107,251,133"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="309,183,417,209"/>
 <area shape="rect" id="node12" href="pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="153,208,261,235"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="318,5,409,32"/>
-<area shape="rect" id="node7" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="646,157,751,184"/>
+<area shape="rect" id="node7" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="646,157,751,184"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="465,208,588,235"/>
 <area shape="rect" id="node9" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="657,208,741,235"/>
 <area shape="rect" id="node10" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="642,259,755,285"/>
@@ -2441,7 +2475,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_a57732b26bdea5b16ceafca4b084679d0_cgraph.png" border="0" usemap="#pgbitmap_8c_a57732b26bdea5b16ceafca4b084679d0_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a57732b26bdea5b16ceafca4b084679d0_cgraph" id="pgbitmap_8c_a57732b26bdea5b16ceafca4b084679d0_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="342,5,447,32"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="342,5,447,32"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="161,56,284,83"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="353,56,437,83"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="338,107,451,133"/>
@@ -2499,10 +2533,10 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="pgbitmap_8c_acacf58ed4473773aedf8b2d26e45f9ad_cgraph.png" border="0" usemap="#pgbitmap_8c_acacf58ed4473773aedf8b2d26e45f9ad_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_acacf58ed4473773aedf8b2d26e45f9ad_cgraph" id="pgbitmap_8c_acacf58ed4473773aedf8b2d26e45f9ad_cgraph">
 <area shape="rect" id="node2" href="pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="152,5,260,32"/>
-<area shape="rect" id="node4" href="pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="159,56,253,83"/>
+<area shape="rect" id="node4" href="pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="158,56,254,83"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="169,107,243,133"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="315,31,406,57"/>
-<area shape="rect" id="node6" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="308,107,413,133"/>
+<area shape="rect" id="node6" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="308,107,413,133"/>
 </map>
 </div>
 
@@ -2614,17 +2648,14 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a94c80a2c0cc0267587fdbf6d43579400"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94c80a2c0cc0267587fdbf6d43579400">&#9670;&nbsp;</a></span>bitmapTestbit()</h2>
+<a id="afe2f4d39fa7b8f245afe3350c9d5303a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe2f4d39fa7b8f245afe3350c9d5303a">&#9670;&nbsp;</a></span>bitmapTestbit()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool bitmapTestbit </td>
+          <td class="memname">bool bitmapTestbit </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structBitmap.html">Bitmap</a> *&#160;</td>
           <td class="paramname"><em>bitmap</em>, </td>
@@ -2641,11 +2672,6 @@ Here is the call graph for this function:</div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Test a bit within a <a class="el" href="structBitmap.html">Bitmap</a>. If the bit is outside of the acceptable range return false.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2709,7 +2735,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node2" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="162,5,253,32"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#a77c391a2e5118e39208dc6649adc5768" title="reduceBitmap" alt="" coords="153,56,261,83"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="309,56,417,83"/>
-<area shape="rect" id="node5" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="646,31,751,57"/>
+<area shape="rect" id="node5" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="646,31,751,57"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="465,81,588,108"/>
 <area shape="rect" id="node7" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="657,81,741,108"/>
 <area shape="rect" id="node8" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="642,132,755,159"/>
@@ -2749,48 +2775,6 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ad15cdc6da1cc4c32ca71159527c027f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad15cdc6da1cc4c32ca71159527c027f2">&#9670;&nbsp;</a></span>copyBitmap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="structBitmap.html">Bitmap</a>* copyBitmap </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structBitmap.html">Bitmap</a> *&#160;</td>
-          <td class="paramname"><em>bitmap</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Create a copy of a bitmap.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bitmap</td><td>The original bitmap</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Copy of bitmap. </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="pgbitmap_8c_ad15cdc6da1cc4c32ca71159527c027f2_cgraph.png" border="0" usemap="#pgbitmap_8c_ad15cdc6da1cc4c32ca71159527c027f2_cgraph" alt=""/></div>
-<map name="pgbitmap_8c_ad15cdc6da1cc4c32ca71159527c027f2_cgraph" id="pgbitmap_8c_ad15cdc6da1cc4c32ca71159527c027f2_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="148,5,239,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -3024,7 +3008,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8c_a1a7070cea994de55a199e0ae50210dde_cgraph.png" border="0" usemap="#pgbitmap_8c_a1a7070cea994de55a199e0ae50210dde_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a1a7070cea994de55a199e0ae50210dde_cgraph" id="pgbitmap_8c_a1a7070cea994de55a199e0ae50210dde_cgraph">
-<area shape="rect" id="node2" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="128,5,233,32"/>
+<area shape="rect" id="node2" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="128,5,233,32"/>
 </map>
 </div>
 
@@ -3165,7 +3149,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="pgbitmap_8c_a77c391a2e5118e39208dc6649adc5768_cgraph.png" border="0" usemap="#pgbitmap_8c_a77c391a2e5118e39208dc6649adc5768_cgraph" alt=""/></div>
 <map name="pgbitmap_8c_a77c391a2e5118e39208dc6649adc5768_cgraph" id="pgbitmap_8c_a77c391a2e5118e39208dc6649adc5768_cgraph">
 <area shape="rect" id="node2" href="pgbitmap_8c.html#a57732b26bdea5b16ceafca4b084679d0" title="bitmapNextBit" alt="" coords="161,31,269,57"/>
-<area shape="rect" id="node3" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="498,5,603,32"/>
+<area shape="rect" id="node3" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="498,5,603,32"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#af7ff33a149e98821473caa33040869d6" title="serialise_bitmap" alt="" coords="317,56,440,83"/>
 <area shape="rect" id="node5" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="509,56,593,83"/>
 <area shape="rect" id="node6" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="494,107,607,133"/>
@@ -3213,7 +3197,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node2" href="pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="197,5,281,32"/>
 <area shape="rect" id="node3" href="pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="182,56,295,83"/>
 <area shape="rect" id="node4" href="pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="176,107,301,133"/>
-<area shape="rect" id="node5" href="pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="186,157,291,184"/>
+<area shape="rect" id="node5" href="pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="186,157,291,184"/>
 </map>
 </div>
 

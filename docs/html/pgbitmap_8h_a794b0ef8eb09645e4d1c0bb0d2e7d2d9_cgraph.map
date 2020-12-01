@@ -2,10 +2,10 @@
 <area shape="rect" id="node2" href="$pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3672,549,3763,576"/>
 <area shape="rect" id="node3" href="$pgbitmap_8c.html#a2b6a03169577b99c1bfe2887508df7fd" title="clearBitmap" alt="" coords="3305,1107,3401,1133"/>
 <area shape="rect" id="node4" href="$pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="3499,1309,3573,1336"/>
-<area shape="rect" id="node6" href="$pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3489,423,3583,449"/>
+<area shape="rect" id="node6" href="$pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3488,423,3584,449"/>
 <area shape="rect" id="node7" href="$pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="3303,752,3402,779"/>
 <area shape="rect" id="node9" href="$pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="157,980,265,1007"/>
-<area shape="rect" id="node5" href="$pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3665,1309,3770,1336"/>
+<area shape="rect" id="node5" href="$pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3665,1309,3770,1336"/>
 <area shape="rect" id="node8" href="$pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="3482,676,3590,703"/>
 <area shape="rect" id="node10" href="$pgbitmap_8c.html#a1eed88fa88b6d53eef0942def83bdfd7" title="bitmap_setmin" alt="" coords="313,271,425,297"/>
 <area shape="rect" id="node11" href="$pgbitmap_8c.html#a04ac8ee243123613223cb43684075d7c" title="bitmapSetMin" alt="" coords="794,195,901,221"/>

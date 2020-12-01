@@ -25,6 +25,7 @@ var searchData=
   ['bitmap_5funion',['bitmap_union',['../pgbitmap_8c.html#af1fb14a8c2c70a0927c140df5375874e',1,'bitmap_union(FunctionCallInfo fcinfo):&#160;pgbitmap.c'],['../pgbitmap_8h.html#af1fb14a8c2c70a0927c140df5375874e',1,'bitmap_union(FunctionCallInfo fcinfo):&#160;pgbitmap.c']]],
   ['bitmapclearbit',['bitmapClearbit',['../pgbitmap_8c.html#a6784edb3ed93c2ef25c9006f077f8a04',1,'pgbitmap.c']]],
   ['bitmapcmp',['bitmapCmp',['../pgbitmap_8c.html#a43ff7db341fd73216e240c814fd069e3',1,'pgbitmap.c']]],
+  ['bitmapcopy',['bitmapCopy',['../pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530',1,'bitmapCopy(Bitmap *bitmap):&#160;pgbitmap.c'],['../pgbitmap_8h.html#ad2ff6ae03bd25ef0dd9321d533134530',1,'bitmapCopy(Bitmap *bitmap):&#160;pgbitmap.c']]],
   ['bitmapempty',['bitmapEmpty',['../pgbitmap_8c.html#a506a4e39a8638fd03a3a96dbbe4ddc43',1,'pgbitmap.c']]],
   ['bitmapequal',['bitmapEqual',['../pgbitmap_8c.html#a280d24a49f46b4c8fc42d4775eb0e4fc',1,'pgbitmap.c']]],
   ['bitmapintersect',['bitmapIntersect',['../pgbitmap_8c.html#a098b1f61deffa1153b3e0ab078020819',1,'pgbitmap.c']]],
@@ -33,6 +34,6 @@ var searchData=
   ['bitmapsetbit',['bitmapSetbit',['../pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad',1,'pgbitmap.c']]],
   ['bitmapsetmax',['bitmapSetMax',['../pgbitmap_8c.html#ab6490c2d214e62753452520ae4ba6830',1,'pgbitmap.c']]],
   ['bitmapsetmin',['bitmapSetMin',['../pgbitmap_8c.html#a04ac8ee243123613223cb43684075d7c',1,'pgbitmap.c']]],
-  ['bitmaptestbit',['bitmapTestbit',['../pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400',1,'pgbitmap.c']]],
+  ['bitmaptestbit',['bitmapTestbit',['../pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a',1,'bitmapTestbit(Bitmap *bitmap, int32 bit):&#160;pgbitmap.c'],['../pgbitmap_8h.html#afe2f4d39fa7b8f245afe3350c9d5303a',1,'bitmapTestbit(Bitmap *bitmap, int32 bit):&#160;pgbitmap.c'],['../pgbitmap__utils_8c.html#a94c80a2c0cc0267587fdbf6d43579400',1,'bitmapTestbit(Bitmap *bitmap, int32 bit):&#160;pgbitmap_utils.c']]],
   ['bitmapunion',['bitmapUnion',['../pgbitmap_8c.html#a491992d869fd06a30474f135b5acf865',1,'pgbitmap.c']]]
 ];

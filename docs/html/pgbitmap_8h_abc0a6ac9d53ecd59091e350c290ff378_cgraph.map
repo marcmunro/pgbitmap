@@ -10,7 +10,7 @@
 <area shape="rect" id="node8" href="$pgbitmap_8c.html#ac6a19cc92c41b6afd5481e255ac62bf6" title="streamlen" alt="" coords="3014,625,3098,652"/>
 <area shape="rect" id="node9" href="$pgbitmap_8c.html#ad08dd1b831969a91e0e8a5b73ddfbaa9" title="serialise_int32" alt="" coords="2999,561,3113,588"/>
 <area shape="rect" id="node10" href="$pgbitmap_8c.html#a00f89b764f0b8f4180d5a2eda0185e65" title="serialise_stream" alt="" coords="2993,511,3119,537"/>
-<area shape="rect" id="node11" href="$pgbitmap_8c.html#a94c80a2c0cc0267587fdbf6d43579400" title="bitmapTestbit" alt="" coords="3003,676,3109,703"/>
+<area shape="rect" id="node11" href="$pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a" title="bitmapTestbit" alt="" coords="3003,676,3109,703"/>
 <area shape="rect" id="node13" href="$pgbitmap_8c.html#abe7f132dec8fc3089e7e815e5329e1c6" title="deserialise_bitmap" alt="" coords="2440,701,2579,728"/>
 <area shape="rect" id="node18" href="$pgbitmap_8c.html#a6a20dff8a779e2448228017ab59eb704" title="bitmap_out" alt="" coords="1259,752,1349,779"/>
 <area shape="rect" id="node14" href="$pgbitmap_8c.html#abf7d3726159048e2efc91943580d9667" title="newBitmap" alt="" coords="3329,944,3420,971"/>
@@ -26,7 +26,7 @@
 <area shape="rect" id="node25" href="$pgbitmap_8c.html#acef8c24d1caffc90682e6f2c4f0668c6" title="bitmap_new" alt="" coords="2284,853,2381,880"/>
 <area shape="rect" id="node26" href="$pgbitmap_8c.html#a1a7070cea994de55a199e0ae50210dde" title="doSetBit" alt="" coords="2837,803,2912,829"/>
 <area shape="rect" id="node27" href="$pgbitmap_8c.html#a794b0ef8eb09645e4d1c0bb0d2e7d2d9" title="bitmap_setbit" alt="" coords="2457,955,2561,981"/>
-<area shape="rect" id="node28" href="$pgbitmap_8c.html#ad15cdc6da1cc4c32ca71159527c027f2" title="copyBitmap" alt="" coords="3175,752,3269,779"/>
+<area shape="rect" id="node28" href="$pgbitmap_8c.html#ad2ff6ae03bd25ef0dd9321d533134530" title="bitmapCopy" alt="" coords="3174,752,3270,779"/>
 <area shape="rect" id="node29" href="$pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad" title="bitmapSetbit" alt="" coords="2642,955,2741,981"/>
 <area shape="rect" id="node31" href="$pgbitmap_8c.html#a08c2640acb10ec32411ae40132419dfb" title="bitmap_testbit" alt="" coords="2637,1056,2745,1083"/>
 <area shape="rect" id="node30" href="$pgbitmap_8c.html#a5032b3562225053cba38c3226c7c1dc2" title="extendBitmap" alt="" coords="3168,916,3276,943"/>
