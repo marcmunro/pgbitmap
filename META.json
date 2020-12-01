@@ -2,7 +2,7 @@
   "name": "pgbitmap",
   "abstract": "Bitmap-type extension for PostgreSQL",
   "description": "Provides a type for storing and manipulating bitmaps (space efficient arrays of bits).",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "maintainer": ["Marc Munro <marc@bloodnok.com>"],
   "license": {
     "BSD": "http://www.opensource.org/licenses/bsd-license.html"
@@ -16,8 +16,8 @@
   },
   "provides": {
     "pgbitmap": {
-      "file": "pgbitmap--0.9.3.sql",
-      "version": "0.9.3",
+      "file": "pgbitmap--0.9.4.sql",
+      "version": "0.9.4",
       "docfile": "README.md"
     }
   },

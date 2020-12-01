@@ -77,15 +77,16 @@ deps:
 #   $ git commit -a
 #   $ git checkout gh-pages
 #   $ git merge master
-#   $ make html
+#   $ make docs
+#   $ git add docs
 #   $ git commit -a
-#   $ git push origin gh-pages
+#   $ git push github gh-pages
 #   $ git checkout master
 docs:
 	doxygen docs/Doxyfile
 
 # Create tarball for distribution to pgxn
-zipfile: clean desp
+zipfile: clean deps
 	git archive --format zip --prefix=pgbitmap-$(PGBITMAP_VERSION)/ \
 	    --output ./pgbitmap-$(PGBITMAP_VERSION).zip master
 
