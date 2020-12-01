@@ -50,6 +50,10 @@ through pgxn.  Updated to Beta status as it all seems stable enough.
 
 0.9.3 (beta) No-change update for release to PGXN
 
+0.9.4 (beta) Utility functions made available to other
+      extensions.
+
+
 Doxygen Docs
 ============
 

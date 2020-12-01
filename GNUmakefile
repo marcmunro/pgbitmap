@@ -44,7 +44,7 @@ override CFLAGS := $(CFLAGS) -g -O0 $(DFORCE_32_BIT)
 
 include $(DEPS)
 
-.PHONY: deps tarball_clean make_deps clean pgbitmap_clean list \
+.PHONY: deps zipfile clean make_deps clean pgbitmap_clean list \
 	zipfile help docs
 
 # Build per-source dependency files for inclusion
@@ -73,11 +73,19 @@ deps:
 	$(MAKE) MAKEFLAGS="$(MAKEFLAGS)" make_deps
 
 # Run doxygen to build html docs
+# Docs are installed to github using the following set of commands:
+#   $ git commit -a
+#   $ git checkout gh-pages
+#   $ git merge master
+#   $ make html
+#   $ git commit -a
+#   $ git push origin gh-pages
+#   $ git checkout master
 docs:
 	doxygen docs/Doxyfile
 
 # Create tarball for distribution to pgxn
-zipfile: clean
+zipfile: clean desp
 	git archive --format zip --prefix=pgbitmap-$(PGBITMAP_VERSION)/ \
 	    --output ./pgbitmap-$(PGBITMAP_VERSION).zip master
 
