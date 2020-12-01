@@ -80,7 +80,7 @@ deps:
 #   $ make docs
 #   $ git add docs
 #   $ git commit -a
-#   $ git push origin gh-pages
+#   $ git push github gh-pages
 #   $ git checkout master
 docs:
 	doxygen docs/Doxyfile
