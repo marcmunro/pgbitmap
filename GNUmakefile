@@ -95,7 +95,7 @@ docs: docs/html
 #
 ZIPFILE_BASENAME = pgbitmap-$(VERSION_NUMBER)
 ZIPFILENAME = $(ZIPFILE_BASENAME).zip
-ONLINE_DOCS = https://marcmunro.github.io/pgbitmap/html/index.html
+ONLINE_DOCS = https://marcmunro.github.io/pgbitmap/docs/html/index.html
 GIT_UPSTREAM = github origin
 
 # Ensure that we are in the master git branch
