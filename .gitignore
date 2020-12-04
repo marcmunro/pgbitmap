@@ -1,0 +1,24 @@
+# Ignore backup and temp files
+*~
+\#*#
+\.\#*
+
+# Build files
+PG_CONFIG
+PG_VERSION
+
+# Log files
+*.log
+
+# The html directory
+html
+
+# autotools crap
+autom4te.cache
+config.status
+
+# C dependency files
+src/*.d
+
+# The generated sql installation file
+pgbitmap--*sql
