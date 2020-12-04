@@ -53,6 +53,8 @@ through pgxn.  Updated to Beta status as it all seems stable enough.
 0.9.4 (beta) Utility functions made available to other
       extensions.
 
+0.9.5 (beta) Fix to (unused by pgbitmap) definition of DatumGetBitmap
+
 
 Doxygen Docs
 ============

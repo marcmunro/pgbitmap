@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+
+awk '
+    BEGIN {
+        failed = 0
+    }
+    /^GNUmakefile.*recipe.*failed/ {
+        failed = 1
+	next
+    }
+    /^make.*check_.*Error 2/ {
+        failed = 1
+	next
+    }
+    { print }
+    END {
+        if (failed) exit(2)
+    }'
+

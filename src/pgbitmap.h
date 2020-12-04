@@ -190,7 +190,7 @@ typedef unsigned char boolean;
 /**
  * Provide a macro for getting a bitmap datum.
  */
-#define DatumGetBitmap(x)	((Bitmap *) DatumGetPointer(x))
+#define DatumGetBitmap(x)	((Bitmap *) PG_DETOAST_DATUM(DatumGetPointer(x)))
 
 /**
  * Provide a macro for dealing with bitmap arguments.
