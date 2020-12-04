@@ -93,7 +93,7 @@ docs: docs/html
 ##
 # release targets
 #
-ZIPFILE_BASENAME = pgbitmap-$(VERSION_NUMBER)
+ZIPFILE_BASENAME = pgbitmap-$(PGBITMAP_VERSION)
 ZIPFILENAME = $(ZIPFILE_BASENAME).zip
 ONLINE_DOCS = https://marcmunro.github.io/pgbitmap/docs/html/index.html
 GIT_UPSTREAM = github origin
