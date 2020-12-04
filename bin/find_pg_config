@@ -1,0 +1,81 @@
+#! /bin/sh
+#
+#      Figure out where to find pg_config.  This is primarily built
+#      for debian and debian like systems where multiple versions of
+#      postgres may be installed.  Return a simplified (2-part)
+#      version string.
+#
+#      Copyright (c) 2020 Marc Munro
+#      Author:  Marc Munro
+#      License: BSD
+#
+
+strip_version()
+{
+    sed 's/.*\([0-9][0-9]*\.[0-9][0-9]*\)\.[0-9][0-9]*.*/\1/'
+}
+
+# Attempt to read the postgres version by connecting to the database
+# server. If that fails, use the contents of the PG_VERSION file, if it
+# exists.
+#
+pgver()
+{
+    if [ "x$1" != "x" ]; then
+        echo $1
+    else
+    	if ver=`psql --no-psqlrc --tuples-only \
+    		  --command="select version()"`; then
+    	    # All was well, so record the version in PG_VERSION for later
+    	    # use by install (which is run from root and may not have access
+    	    # to psql or postgres databases.
+	    ver=`echo ${ver} | awk '{print $2}' | strip_version`
+    	    echo $ver >PG_VERSION
+    	    echo $ver
+    	else
+    	    if [ -f ./PG_VERSION ]; then
+    		    cat ./PG_VERSION
+    	    else
+	        echo "Cannot establish postgres version..." 1>&2
+    	        echo "Specify PG_VERSION explicitly in the make command." 1>&2
+    	        exit 2
+	    fi
+    	fi
+    fi
+}
+
+if [ -r PG_CONFIG ]; then
+    cat PG_CONFIG
+else
+    # Maybe the correct pg_config is where it claims to be.
+    #
+    if ver=`pgver $1`; then
+	major_ver=`echo "${ver}" | cut -d. -f1`
+	if [ "0${major_ver}" -ge 10 ]; then
+	    # This is a postgres version after pg 10, when version
+	    # numbering changed.  We now only need the major part of
+	    # the version number.
+	    ver=${major_ver}
+	fi
+        if cver=`pg_config --version | strip_version`; then
+            if [ "x${cver}" = "x${ver}" ]; then
+                which pg_config > PG_CONFIG
+                cat PG_CONFIG
+        	exit 0
+            fi
+        fi
+
+        # Or maybe, we can figure it out from the database version
+        if [ -f /usr/lib/postgresql/${ver}/bin/pg_config ]; then
+            echo /usr/lib/postgresql/${ver}/bin/pg_config  > PG_CONFIG
+            cat PG_CONFIG
+            exit 0
+        fi
+
+        # If we get here, we really have not much idea, nor anywhere else to
+        # look.
+
+        echo "Cannot find pg_config for postgres version ${ver}" 1>&2
+        exit 2
+    fi
+fi

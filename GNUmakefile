@@ -32,7 +32,7 @@ include $(SUBDIRS:%=%/Makefile)
 
 DATA = $(wildcard pgbitmap--*.sql)
 
-PG_CONFIG := $(shell ./find_pg_config)
+PG_CONFIG := $(shell bin/find_pg_config)
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 
@@ -82,13 +82,96 @@ deps:
 #   $ git commit -a
 #   $ git push github gh-pages
 #   $ git checkout master
-docs:
+
+docs/html: $(SOURCES)
 	doxygen docs/Doxyfile
 
-# Create tarball for distribution to pgxn
-zipfile: clean deps
-	git archive --format zip --prefix=pgbitmap-$(PGBITMAP_VERSION)/ \
-	    --output ./pgbitmap-$(PGBITMAP_VERSION).zip master
+docs: docs/html
+
+
+
+##
+# release targets
+#
+ZIPFILE_BASENAME = pgbitmap-$(VERSION_NUMBER)
+ZIPFILENAME = $(ZIPFILE_BASENAME).zip
+ONLINE_DOCS = https://marcmunro.github.io/pgbitmap/html/index.html
+GIT_UPSTREAM = github origin
+
+# Ensure that we are in the master git branch
+check_branch:
+	@[ `git rev-parse --abbrev-ref HEAD` = master ] || \
+	    (echo "    CURRENT GIT BRANCH IS NOT MASTER" 1>&2 && exit 2)
+
+# Check that our metadata file for pgxs is up to date.  This is very
+# simplistic but aimed only at ensuring you haven't forgotten to
+# update the file.
+check_meta: META.json
+	@grep '"version"' META.json | head -2 | cut -d: -f2 | \
+	    tr -d '",' | \
+	    while read a; do \
+	      	[ "x$$a" = "x$(PGBITMAP_VERSION)" ] || \
+		  (echo "    INCORRECT VERSION ($$a) IN META.json"; exit 2); \
+	    done
+	@grep '"file"' META.json | cut -d: -f2 | tr -d '",' | \
+	    while read a; do \
+	      	[ "x$$a" = "xpgbitmap--$(PGBITMAP_VERSION).sql" ] || \
+		  (echo "    INCORRECT FILE NAME ($$a) IN META.json"; exit 2); \
+	    done
+
+# Check that head has been tagged.  We assume that if it has, then it
+# has been tagged correctly.
+check_tag:
+	@tag=`git tag --points-at HEAD`; \
+	if [ "x$${tag}" = "x" ]; then \
+	    echo "    NO GIT TAG IN PLACE"; \
+	    exit 2; \
+	fi
+
+# Check that the latest docs have been published.
+check_docs: docs
+	@[ "x`cat docs/html/index.html | md5sum`" = \
+	   "x`curl -s $(ONLINE_DOCS) | md5sum`" ] || \
+	    (echo "    LATEST DOCS NOT PUBLISHED"; exit 2)
+
+# Check that there are no uncomitted changes.
+check_commit:
+	@git status -s | wc -l | grep '^0$$' >/dev/null || \
+	    (echo "    UNCOMMITTED CHANGES FOUND"; exit 2)
+
+# Check that we have pushed the latest changes
+check_origin:
+	@err=0; \
+	 for origin in $(GIT_UPSTREAM); do \
+	    git diff --quiet master $${origin}/master 2>/dev/null || \
+	    { echo "    UNPUSHED UPDATES FOR $${origin}"; \
+	      err=2; }; \
+	done; exit $$err
+
+# Check that this version appears in the change history
+check_history:
+	@grep "^$(PGBITMAP_VERSION)" \
+	    README.md >/dev/null || \
+	    (echo "    CURRENT VERSION NOT RECORDED IN CHANGE HISTORY"; \
+	     exit 2)
+
+# Create a zipfile for release to pgxn, but only if everthing is ready
+# to go.  Note that we distribute our dependencies in case our user is
+# going to build things manually and can't build them themselves, and
+# our built docs as we don't require users to have a suitable build
+# environment for building them themselves, and having the docs
+# installed locally is a good thing.
+zipfile: 
+	@$(MAKE) -k --no-print-directory \
+	    check_branch check_meta check_tag check_docs \
+	    check_commit check_origin check_history 2>&1 | \
+	    bin/makefilter 1>&2
+	@$(MAKE) do_zipfile
+
+do_zipfile: mostly_clean deps
+	git archive --format zip --prefix=$(ZIPFILE_BASENAME)/ \
+	    --output $(ZIPFILENAME) master
+
 
 # Target to remove generated and backup files.
 clean: pgbitmap_clean docs_clean

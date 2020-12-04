@@ -8,7 +8,7 @@
 #
 
 directory       = 'extension'
-default_version = '0.9.4'
+default_version = '0.9.5'
 module_pathname = '$libdir/pgbitmap'
 superuser       = true
 relocatable     = false
