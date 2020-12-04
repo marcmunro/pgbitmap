@@ -98,6 +98,8 @@ $(document).ready(function(){initNavTree('pgbitmap_8h.html','');});
 Include dependency graph for pgbitmap.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="pgbitmap_8h__incl.png" border="0" usemap="#src_2pgbitmap_8h" alt=""/></div>
+<map name="src_2pgbitmap_8h" id="src_2pgbitmap_8h">
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -147,7 +149,7 @@ Macros</h2></td></tr>
 <tr class="separator:a3acffbd305ee72dcd4593c0d8af64a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa99ec4acc4ecb2dc3c2d05da15d0e3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8h.html#afa99ec4acc4ecb2dc3c2d05da15d0e3f">MAX</a>(a,  b)&#160;&#160;&#160;((a &gt; b)? a: b)</td></tr>
 <tr class="separator:afa99ec4acc4ecb2dc3c2d05da15d0e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3ece03bd0432054dbee66839b500b76"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8h.html#aa3ece03bd0432054dbee66839b500b76">DatumGetBitmap</a>(x)&#160;&#160;&#160;((<a class="el" href="structBitmap.html">Bitmap</a> *) DatumGetPointer(x))</td></tr>
+<tr class="memitem:aa3ece03bd0432054dbee66839b500b76"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8h.html#aa3ece03bd0432054dbee66839b500b76">DatumGetBitmap</a>(x)&#160;&#160;&#160;((<a class="el" href="structBitmap.html">Bitmap</a> *) PG_DETOAST_DATUM(DatumGetPointer(x)))</td></tr>
 <tr class="separator:aa3ece03bd0432054dbee66839b500b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a712ca4abc2a7dab393fbcc3761748215"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pgbitmap_8h.html#a712ca4abc2a7dab393fbcc3761748215">PG_GETARG_BITMAP</a>(x)</td></tr>
 <tr class="separator:a712ca4abc2a7dab393fbcc3761748215"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -286,7 +288,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Gives the index into <a class="el" href="pgbitmap__utils_8c.html#a0fc08ff47fbe74c58579fa10b42a4101">bitmasks</a> for the bit specified in x.</p>
+<p>Gives the index into <a class="el" href="pgbitmap_8c.html#a3bb1d81e8cdb60668235bbd36e5a987b">bitmasks</a> for the bit specified in x.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>The bit in question</td></tr>
@@ -360,7 +362,7 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">x</td><td>)</td>
-          <td>&#160;&#160;&#160;((<a class="el" href="structBitmap.html">Bitmap</a> *) DatumGetPointer(x))</td>
+          <td>&#160;&#160;&#160;((<a class="el" href="structBitmap.html">Bitmap</a> *) PG_DETOAST_DATUM(DatumGetPointer(x)))</td>
         </tr>
       </table>
 </div><div class="memdoc">

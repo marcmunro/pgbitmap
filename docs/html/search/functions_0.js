@@ -34,6 +34,6 @@ var searchData=
   ['bitmapsetbit',['bitmapSetbit',['../pgbitmap_8c.html#acacf58ed4473773aedf8b2d26e45f9ad',1,'pgbitmap.c']]],
   ['bitmapsetmax',['bitmapSetMax',['../pgbitmap_8c.html#ab6490c2d214e62753452520ae4ba6830',1,'pgbitmap.c']]],
   ['bitmapsetmin',['bitmapSetMin',['../pgbitmap_8c.html#a04ac8ee243123613223cb43684075d7c',1,'pgbitmap.c']]],
-  ['bitmaptestbit',['bitmapTestbit',['../pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a',1,'bitmapTestbit(Bitmap *bitmap, int32 bit):&#160;pgbitmap.c'],['../pgbitmap_8h.html#afe2f4d39fa7b8f245afe3350c9d5303a',1,'bitmapTestbit(Bitmap *bitmap, int32 bit):&#160;pgbitmap.c'],['../pgbitmap__utils_8c.html#a94c80a2c0cc0267587fdbf6d43579400',1,'bitmapTestbit(Bitmap *bitmap, int32 bit):&#160;pgbitmap_utils.c']]],
+  ['bitmaptestbit',['bitmapTestbit',['../pgbitmap_8c.html#afe2f4d39fa7b8f245afe3350c9d5303a',1,'bitmapTestbit(Bitmap *bitmap, int32 bit):&#160;pgbitmap.c'],['../pgbitmap_8h.html#afe2f4d39fa7b8f245afe3350c9d5303a',1,'bitmapTestbit(Bitmap *bitmap, int32 bit):&#160;pgbitmap.c']]],
   ['bitmapunion',['bitmapUnion',['../pgbitmap_8c.html#a491992d869fd06a30474f135b5acf865',1,'pgbitmap.c']]]
 ];
